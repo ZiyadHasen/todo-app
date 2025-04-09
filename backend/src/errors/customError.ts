@@ -1,5 +1,3 @@
-import { StatusCodes } from "http-status-codes";
-
 class CustomError extends Error {
   public readonly statusCode: number;
 
@@ -15,24 +13,24 @@ class CustomError extends Error {
 
 export class NotFoundError extends CustomError {
   constructor(message: string) {
-    super(message, StatusCodes.NOT_FOUND);
+    super(message, 404); // NOT FOUND
   }
 }
 
 export class BadRequestError extends CustomError {
   constructor(message: string) {
-    super(message, StatusCodes.BAD_REQUEST);
+    super(message, 400); // BAD REQUEST
   }
 }
 
 export class UnauthenticatedError extends CustomError {
   constructor(message: string) {
-    super(message, StatusCodes.UNAUTHORIZED);
+    super(message, 401); // UNAUTHORIZED
   }
 }
 
 export class UnauthorizedError extends CustomError {
   constructor(message: string) {
-    super(message, StatusCodes.FORBIDDEN);
+    super(message, 403); // FORBIDDEN
   }
 }

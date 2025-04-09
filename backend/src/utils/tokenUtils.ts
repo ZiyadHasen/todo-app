@@ -13,3 +13,13 @@ export const verifyJWT = (token: string) => {
   const decoded = jwt.verify(token, process.env.JWT_SECRET!);
   return decoded;
 };
+
+// export const verifyJWT = (token: string) => {
+//   const decoded = jwt.verify(token, secret) as {
+//     userId: string,
+//     role: string,
+//     name: string
+//     role:string
+//   };
+//   return { user: decoded };  // ← Return pre-formed user object
+// };

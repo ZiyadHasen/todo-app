@@ -76,6 +76,33 @@ export const validateLoginInput = withValidationErrors([
   // Removed length requirement for login flexibility
 ]);
 
+export const validateUpdateUserInput = withValidationErrors([
+  body("name").trim().notEmpty().withMessage("Name is required"),
+
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email is required")
+    .bail() // Stop further checks if empty
+    .isEmail()
+    .withMessage("That is not a valid email")
+    .normalizeEmail(), // Sanitizes email input
+  body("phone")
+    .trim()
+    .notEmpty()
+    .withMessage("Phone number is required")
+    .matches(/^\+?\d{10,15}$/)
+    .withMessage("Invalid phone number format"),
+
+  body("birthYear")
+    .notEmpty()
+    .withMessage("Birth year is required")
+    .isInt({ min: 1900, max: new Date().getFullYear() })
+    .withMessage(
+      `Birth year must be between 1900 and ${new Date().getFullYear()}`
+    ),
+]);
+
 // 🔥 **Exactly! You got it.**
 
 // By using `withValidationErrors`, we **decouple** the **validation logic** from the **error handling**, making the code:

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { Role } from "../constants/role";
+import { Role } from "../constants/constants";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -32,13 +32,6 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-// Hash password before saving
-// UserSchema.pre("save", async function (next) {
-//   if (!this.isModified("password")) return next();
-//   this.password = await bcrypt.hash(this.password, 10);
-//   next();
-// });
 
 // Index for faster email queries
 // UserSchema.index({ email: 1 });

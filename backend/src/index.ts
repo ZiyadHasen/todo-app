@@ -13,10 +13,12 @@ import { connectDB } from "./config/db";
 
 const app = express();
 
-// custom imports Router
+//? custom imports Router
 import authRouter from "./routes/authRouter";
-// middleware
-// import { authenticateUser } from "./middleware/authMiddleware";
+import userRouter from "./routes/userRouter";
+
+//? middleware
+import { authenticateUser } from "./middleware/authMiddleware";
 import errorHandlerMiddleware from "./errors/errorHandlerMiddleware";
 
 // Middleware
@@ -39,6 +41,7 @@ app.use(
 
 //* Routes
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", authenticateUser, userRouter);
 
 //! Error middleware
 app.use(errorHandlerMiddleware);

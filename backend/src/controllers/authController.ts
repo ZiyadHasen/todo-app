@@ -56,6 +56,7 @@ export const login = async (req: Request, res: Response) => {
     userId: user._id,
     role: user.role,
     name: user.name,
+    email: user.email,
   });
 
   const oneDay = 24 * 60 * 60 * 1000;
