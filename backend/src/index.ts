@@ -20,9 +20,10 @@ import userRouter from "./routes/userRouter";
 //? middleware
 import { authenticateUser } from "./middleware/authMiddleware";
 import errorHandlerMiddleware from "./errors/errorHandlerMiddleware";
+import todoRouter from "./routes/todoRouter";
 
 // Middleware
-app.use(cors());
+
 app.use(express.json());
 
 // const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -42,6 +43,7 @@ app.use(
 //* Routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
+app.use("/api/v1/todos", authenticateUser, todoRouter);
 
 //! Error middleware
 app.use(errorHandlerMiddleware);
@@ -54,6 +56,7 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log(`🔥 Server running on port ${PORT}`);
       console.log(`⚡ Database: ${mongoose.connection.db?.databaseName}`);
+      console.log(`🌐 Environment: ${process.env.NODE_ENV}`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);

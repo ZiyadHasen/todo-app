@@ -10,5 +10,5 @@ const TodoSchema = new mongoose.Schema({
     default: Status.ACTIVE,
   },
 });
-
+TodoSchema.index({ user: 1, text: 1 }, { unique: true });
 export default mongoose.model("todo", TodoSchema);

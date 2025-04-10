@@ -3,8 +3,8 @@ export enum Role {
   ADMIN = "admin",
 }
 export enum Status {
-  ACTIVE,
-  COMPLETED,
+  ACTIVE = "Active",
+  COMPLETED = "Completed",
 }
 
 export type User = {

@@ -1,7 +1,19 @@
 import { Request, Response, NextFunction } from "express";
-import { body, validationResult, ValidationChain } from "express-validator";
-import { BadRequestError } from "../errors/customError";
+import {
+  body,
+  validationResult,
+  ValidationChain,
+  param,
+} from "express-validator";
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+} from "../errors/customError";
 import User from "../models/User";
+import mongoose from "mongoose";
+import Todo from "../models/Todo";
+import { Status } from "../constants/constants";
 
 // Generic function to validate and handle errors
 const withValidationErrors = (validateValues: ValidationChain[]) => {
@@ -103,8 +115,46 @@ export const validateUpdateUserInput = withValidationErrors([
     ),
 ]);
 
-// 🔥 **Exactly! You got it.**
+export const validateTodoInput = withValidationErrors([
+  body("text").trim().notEmpty().withMessage("Title is required"),
+]);
+export const validateUpdateTodoInput = withValidationErrors([
+  body("text").optional().isString().trim().notEmpty(),
+  body("status").optional().isIn([Status.ACTIVE, Status.COMPLETED]),
+]);
 
+export const validateTodoIdParam = withValidationErrors([
+  param("id")
+    .isString()
+    .withMessage("ID must be a string")
+    .bail()
+    .custom(async (value, { req }) => {
+      // 1. Validate MongoDB ID format
+      if (!mongoose.Types.ObjectId.isValid(value)) {
+        throw new BadRequestError("Invalid Todo ID format");
+      }
+
+      // 2. Check if todo exists
+      const todo = await Todo.findById(value).select("user status");
+      if (!todo) {
+        throw new NotFoundError(`Todo with ID ${value} not found`);
+      }
+
+      // 3. Verify ownership (or admin rights if you have roles)
+      const isAdmin = req.user?.role === "admin"; // Optional role check
+      const isOwner = req.user?.userId.toString() === todo.user!.toString();
+
+      if (!isAdmin && !isOwner) {
+        throw new UnauthorizedError("You can only modify your own todos");
+      }
+
+      // 4. Attach todo to request for later use
+      req.todo = todo;
+      return true;
+    }),
+]);
+
+// 🔥 **Exactly! You got it.**
 // By using `withValidationErrors`, we **decouple** the **validation logic** from the **error handling**, making the code:
 // ✅ **Reusable** – Any validation chain can plug into it.
 // ✅ **Cleaner** – No need to repeat the same error-handling logic everywhere.

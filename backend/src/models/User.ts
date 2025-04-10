@@ -33,9 +33,6 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Index for faster email queries
-// UserSchema.index({ email: 1 });
-
 //This method ensures that the password is stripped out before the document is converted to JSON and returned to the client.
 UserSchema.methods.toJSON = function () {
   let obj = this.toObject();
