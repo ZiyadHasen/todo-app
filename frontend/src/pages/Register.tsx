@@ -1,5 +1,5 @@
-import RegisterStepOne from "@/components/custom/registerStepOne";
-import RegisterStepTwo from "@/components/custom/registerStepTwo";
+import SignupFormOne from "@/components/custom/registerStepOne";
+import SignupFormTwo from "@/components/custom/registerStepTwo";
 import { useState } from "react";
 
 export default function Register() {
@@ -8,9 +8,9 @@ export default function Register() {
   return (
     <div>
       {step === 1 ? (
-        <RegisterStepOne onNext={() => setStep(2)} />
+        <SignupFormOne onNext={() => setStep(2)} />
       ) : (
-        <RegisterStepTwo onBack={() => setStep(1)} />
+        <SignupFormTwo onBack={() => setStep(1)} />
       )}
     </div>
   );

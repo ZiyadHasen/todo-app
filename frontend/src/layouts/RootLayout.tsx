@@ -8,8 +8,8 @@ export default function RootLayout() {
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
-    <div>
-      <nav className="p-4 bg-gray-200 dark:bg-gray-800 flex justify-between">
+    <div className="max-h-screen">
+      <nav className="flex justify-between bg-gray-200 p-4 dark:bg-gray-800">
         <div>
           <Link to="/">Login</Link>
           <Link to="/register" className="ml-4">
@@ -24,12 +24,12 @@ export default function RootLayout() {
         </div>
         <button
           onClick={toggleTheme}
-          className="p-2 bg-blue-500 text-white rounded"
+          className="rounded bg-blue-500 p-2 text-white"
         >
           Toggle Theme
         </button>
       </nav>
-      <main className="p-4">
+      <main className="">
         <Outlet />
       </main>
     </div>
