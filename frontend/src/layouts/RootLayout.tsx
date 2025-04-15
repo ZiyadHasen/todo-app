@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import { useTheme } from "../theme/ThemeProvider";
+import image from "@/assets/Image/bigcover.png";
 
 export default function RootLayout() {
   const { theme, setTheme } = useTheme();
@@ -8,7 +9,7 @@ export default function RootLayout() {
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
-    <div className="max-h-screen">
+    <div className="min-h-screen">
       <nav className="flex justify-between bg-gray-200 p-4 dark:bg-gray-800">
         <div>
           <Link to="/">Login</Link>
@@ -29,7 +30,11 @@ export default function RootLayout() {
           Toggle Theme
         </button>
       </nav>
-      <main className="">
+      <main
+        className="relative flex min-h-screen w-full justify-center overflow-x-hidden bg-cover bg-center md:items-center"
+        style={{ backgroundImage: `url(${image})` }}
+      >
+        <div className="absolute inset-0 bg-black/20" />
         <Outlet />
       </main>
     </div>

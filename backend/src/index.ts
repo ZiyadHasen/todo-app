@@ -34,9 +34,18 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.static(path.resolve(__dirname, "./public")));
 app.use(cookieParser());
 
+// app.use(
+//   cors({
+//     origin: "http://localhost:5500",
+//   })
+// );
+
+// Add these headers in your server
 app.use(
   cors({
-    origin: "http://localhost:5500",
+    origin: "http://localhost:5173", // Your frontend URL
+    methods: ["POST", "OPTIONS"], // Allow these methods
+    allowedHeaders: ["Content-Type"],
   })
 );
 
