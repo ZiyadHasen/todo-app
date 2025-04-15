@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import EditProfile from "./pages/EditProfile";
 import Error from "./pages/Error";
 import AuthLayout from "./layouts/AuthLayout";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <ThemeProvider>
+      <ToastContainer />
       <RouterProvider router={router} />
     </ThemeProvider>
   );
