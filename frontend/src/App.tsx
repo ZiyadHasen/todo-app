@@ -1,7 +1,7 @@
 import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "./theme/ThemeProvider";
-import RootLayout from "./layouts/RootLayout";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -9,6 +9,7 @@ import EditProfile from "./pages/EditProfile";
 import Error from "./pages/Error";
 import AuthLayout from "./layouts/AuthLayout";
 import { ToastContainer } from "react-toastify";
+import { RootLayout } from "./layouts/RootLayout";
 
 const router = createBrowserRouter([
   {

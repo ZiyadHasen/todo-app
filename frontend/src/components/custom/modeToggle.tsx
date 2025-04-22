@@ -1,36 +1,57 @@
-import { Moon, Sun } from "lucide-react";
+"use client";
 
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/theme/ThemeProvider";
+import { cn } from "@/lib/utils";
+import { useTheme, type Theme } from "@/theme/ThemeProvider";
+import { Check, Moon, Sun } from "lucide-react";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const resolvedTheme =
+    theme === "system"
+      ? matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : theme;
+
+  const themes: { value: Theme; label: string }[] = [
+    { value: "light", label: "Light" },
+    { value: "dark", label: "Dark" },
+    { value: "system", label: "System" },
+  ];
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        <div className="cursor-pointer">
+          {resolvedTheme === "dark" ? (
+            <Moon size={24} color="#D375B9" />
+          ) : (
+            <Sun size={24} color="#D375B9" />
+          )}
+
           <span className="sr-only">Toggle theme</span>
-        </Button>
+        </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+      <DropdownMenuContent align="end" className="bg-white dark:bg-black">
+        {themes.map((t) => (
+          <DropdownMenuItem
+            key={t.value}
+            onClick={() => setTheme(t.value)}
+            className={cn(
+              "flex cursor-pointer items-center justify-between gap-2 text-gray-900 dark:text-gray-100",
+              theme === t.value && "font-medium",
+            )}
+          >
+            <span>{t.label}</span>
+            {theme === t.value && <Check className="h-4 w-4" />}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
