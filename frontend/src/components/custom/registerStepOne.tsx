@@ -19,7 +19,7 @@ interface FormData {
 interface SignupFormOneProps {
   register: UseFormRegister<FormData>;
   errors: FieldErrors<FormData>;
-  onNext: () => Promise<void>; // Updated to reflect async nature
+  onNext: () => Promise<void>;
 }
 
 export default function SignupFormOne({
@@ -130,7 +130,7 @@ export default function SignupFormOne({
         <Button
           type="button"
           onClick={onNext}
-          className="mt-2 flex h-10 w-full items-center justify-center gap-1 rounded-md bg-[#d176b6] text-sm text-white hover:bg-[#c065a5] sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
+          className="mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md bg-[#d176b6] text-sm text-white hover:bg-[#c065a5] sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
           Next <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
         </Button>

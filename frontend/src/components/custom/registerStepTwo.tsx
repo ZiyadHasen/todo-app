@@ -95,7 +95,7 @@ export default function SignupFormTwo({
         {/* Submit Button */}
         <Button
           type="submit"
-          className="mt-2 flex h-10 w-full items-center justify-center gap-1 rounded-md bg-[#d176b6] text-sm text-white hover:bg-[#c065a5] sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
+          className="mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md bg-[#d176b6] text-sm text-white hover:bg-[#c065a5] sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
           Complete signup{" "}
           <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
@@ -105,7 +105,7 @@ export default function SignupFormTwo({
         <Button
           type="button"
           onClick={onBack}
-          className="mt-2 flex h-10 w-full items-center justify-center gap-1 rounded-md bg-[#7C8495] text-sm text-white hover:bg-[#464C55] sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
+          className="mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md bg-[#7C8495] text-sm text-white hover:bg-[#464C55] sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
           <ArrowLeft size={16} className="sm:h-[18px] sm:w-[18px]" /> Back
         </Button>

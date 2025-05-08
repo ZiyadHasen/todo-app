@@ -1,4 +1,3 @@
-import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "./theme/ThemeProvider";
 
@@ -10,6 +9,7 @@ import Error from "./pages/Error";
 import AuthLayout from "./layouts/AuthLayout";
 import { ToastContainer } from "react-toastify";
 import { RootLayout } from "./layouts/RootLayout";
+import { AuthProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -35,9 +35,11 @@ const router = createBrowserRouter([
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <ToastContainer />
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <ToastContainer />
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }

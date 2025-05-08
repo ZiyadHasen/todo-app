@@ -1,6 +1,5 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Todo from "../models/Todo";
-import { Status } from "../constants/constants";
 
 // Create a new todo
 export const createTodo = async (req: Request, res: Response) => {
@@ -45,7 +44,7 @@ export const getActiveTodos = async (req: Request, res: Response) => {
   try {
     const activeTodos = await Todo.find({
       user: req.user?.userId,
-      status: Status.ACTIVE,
+      status: true,
     });
     if (!activeTodos || activeTodos.length === 0) {
       res
@@ -63,7 +62,7 @@ export const getCompletedTodos = async (req: Request, res: Response) => {
   try {
     const completedTodos = await Todo.find({
       user: req.user?.userId,
-      status: "1",
+      status: false,
     });
     if (!completedTodos || completedTodos.length === 0) {
       res
@@ -97,7 +96,7 @@ export const deleteCompletedTodos = async (req: Request, res: Response) => {
   try {
     const result = await Todo.deleteMany({
       user: req.user?.userId,
-      status: Status.COMPLETED,
+      status: false,
     });
 
     if (result.deletedCount === 0) {
@@ -157,9 +156,9 @@ export const deleteTodo = async (req: Request, res: Response) => {
 };
 
 // !update single todo
-export const updateTodo = async (req: Request, res: Response) => {
+export const updateTodoTitle = async (req: Request, res: Response) => {
   try {
-    const { text, status } = req.body;
+    const { text } = req.body;
 
     const todo = await Todo.findOneAndUpdate(
       {
@@ -168,7 +167,6 @@ export const updateTodo = async (req: Request, res: Response) => {
       },
       {
         text,
-        status,
       },
       {
         new: true,
@@ -201,15 +199,20 @@ export const updateTodo = async (req: Request, res: Response) => {
 
 // Update only the status of a todo
 
-export const updateTodoStatus = async (req: Request, res: Response) => {
+export const updateTodoStatus = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { todoId, status } = req.body;
-    // console.log("todo is : " + todoId + " , status : " + status);
-    // ! sends the error response but then moves on to run the rest of the function, potentially
-    // ! sending a second response and throwing "Cannot set headers after they are sent" error.
-    //! Always bail out with return; to prevent that.
-    if (!status) {
-      res.status(400).json({ message: "Valid status is required ..." });
+
+    // 1. Validate input
+    if (typeof status !== "boolean") {
+      res.status(400).json({
+        success: false,
+        message: "Valid boolean status is required",
+      });
       return;
     }
 
@@ -217,15 +220,17 @@ export const updateTodoStatus = async (req: Request, res: Response) => {
     const updatedTodo = await Todo.findOneAndUpdate(
       {
         _id: todoId,
-        user: req.user?.userId,
+        user: req.user?.userId, // Ensure ownership
       },
+      { status },
       {
-        status,
-      },
-      { new: true, runValidators: true }
+        new: true,
+        runValidators: true,
+        projection: { text: 1, status: 1 }, // Only return needed fields
+      }
     );
 
-    // 3. Handle case where todo wasn't found
+    // 3. Handle not found case
     if (!updatedTodo) {
       res.status(404).json({
         success: false,
@@ -234,20 +239,18 @@ export const updateTodoStatus = async (req: Request, res: Response) => {
       return;
     }
 
-    // 4.  success response
+    // 4. Success response
     res.status(200).json({
       success: true,
       message: "Todo status updated successfully",
       data: {
-        text: updatedTodo?.text,
-        status: updatedTodo?.status,
+        id: updatedTodo._id,
+        text: updatedTodo.text,
+        status: updatedTodo.status,
       },
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to update todo status",
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
+    // Pass error to Express error handler middleware
+    next(error);
   }
 };

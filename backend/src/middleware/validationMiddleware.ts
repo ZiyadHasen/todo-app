@@ -13,7 +13,6 @@ import {
 import User from "../models/User";
 import mongoose from "mongoose";
 import Todo from "../models/Todo";
-import { Status } from "../constants/constants";
 
 // Generic function to validate and handle errors
 const withValidationErrors = (validateValues: ValidationChain[]) => {
@@ -120,7 +119,10 @@ export const validateTodoInput = withValidationErrors([
 ]);
 export const validateUpdateTodoInput = withValidationErrors([
   body("text").optional().isString().trim().notEmpty(),
-  body("status").optional().isIn([Status.ACTIVE, Status.COMPLETED]),
+  body("status")
+    .optional()
+    .isBoolean()
+    .withMessage("Status must be a boolean value."),
 ]);
 
 export const validateTodoIdParam = withValidationErrors([

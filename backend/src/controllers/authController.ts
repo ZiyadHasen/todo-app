@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import { hashPassword, comparePassword } from "../utils/passwordUtils";
-// import mongoose from "mongoose";
+import { MongoServerError } from "mongodb";
 import { createJWT } from "../utils/tokenUtils";
 
 // 1. Define strict types for cookie options
@@ -22,9 +22,19 @@ export const register = async (req: Request, res: Response) => {
 
     const user = await User.create(req.body);
     console.log("User Created ");
+
     res.status(201).json({ msg: "user created" });
-  } catch (error) {
-    // This catch is just for unexpected errors (validation already handled duplicates)
+  } catch (error: unknown) {
+    // Type‐guard for Mongo duplicate‐key
+    if (
+      error instanceof MongoServerError &&
+      // 11000 is duplicate‐key
+      error.code === 11000
+    ) {
+      res.status(409).json({ error: "Email already in use" });
+    }
+
+    // Fallback for anything else
     console.error("Registration error:", error);
     res.status(500).json({ error: "Registration failed" });
   }
@@ -61,11 +71,20 @@ export const login = async (req: Request, res: Response) => {
 
   const oneDay = 24 * 60 * 60 * 1000;
 
+  // res.cookie("token", token, {
+  //   httpOnly: true,
+  //   expires: new Date(Date.now() + oneDay),
+  //   secure: false,
+  //   // secure: process.env.NODE_ENV === "production",
+  //   sameSite: "lax",
+  //   // sameSite: "strict",
+  // });
+
   res.cookie("token", token, {
     httpOnly: true,
+    secure: true, // ✅ must be true when SameSite=None
+    sameSite: "none", // ✅ allows cookies on CORS XHR
     expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
   });
 
   res.status(200).json({

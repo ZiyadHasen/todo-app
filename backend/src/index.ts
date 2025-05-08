@@ -40,12 +40,12 @@ app.use(cookieParser());
 //   })
 // );
 
-// Add these headers in your server
 app.use(
   cors({
-    origin: "http://localhost:5173", // Your frontend URL
-    methods: ["POST", "OPTIONS"], // Allow these methods
-    allowedHeaders: ["Content-Type"],
+    origin: "http://localhost:5173",
+    credentials: true, // allows the browser to send cookies
+    // if you specify methods, include GET:
+    methods: ["GET", "POST", "OPTIONS"],
   })
 );
 

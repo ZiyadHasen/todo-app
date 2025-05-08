@@ -7,8 +7,8 @@ import {
   getCompletedTodos,
   getTodo,
   getTodos,
-  updateTodo,
   updateTodoStatus,
+  updateTodoTitle,
 } from "../controllers/todoController";
 
 import {
@@ -30,6 +30,6 @@ router.delete("/completed", deleteCompletedTodos);
 router
   .route("/:id")
   .get(...validateTodoIdParam, getTodo)
-  .patch(...validateTodoIdParam, ...validateUpdateTodoInput, updateTodo)
+  .patch(...validateTodoIdParam, ...validateUpdateTodoInput, updateTodoTitle)
   .delete(...validateTodoIdParam, deleteTodo);
 export default router;

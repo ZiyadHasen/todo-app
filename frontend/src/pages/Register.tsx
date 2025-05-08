@@ -5,6 +5,7 @@ import SignupFormOne from "@/components/custom/registerStepOne";
 import SignupFormTwo from "@/components/custom/registerStepTwo";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type FormData = {
   email: string;
@@ -31,25 +32,30 @@ export default function Register() {
   // Handle form submission
   const onFormSubmit = async (data: FormData) => {
     try {
+      const { confirmPassword, ...apiData } = data;
       const response = await fetch(
         "http://localhost:5000/api/v1/auth/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ...data,
+            ...apiData,
             birthYear: Number(data.birthYear),
-            confirmPassword: undefined, // Remove if backend doesn't need it
           }),
         },
       );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
       const result = await response.json();
       console.log("Registration successful:", result);
+
+      if (!response.ok) {
+        // use the server’s message if you have one
+        return toast.error(
+          response.status === 409
+            ? result.error || "Email already registered."
+            : result.error || "Registration failed.",
+        );
+      }
       navigate("/"); // Redirect to home
       return result;
     } catch (error) {

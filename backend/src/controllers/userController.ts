@@ -6,7 +6,7 @@ export const getUser = async (req: Request, res: Response) => {
     const user = await User.findById({ _id: req.user!.userId }).select(
       "-password"
     );
-    // console.log("the logged in user : " + user);
+    console.log("the logged in user : " + user);
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
