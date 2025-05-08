@@ -32,6 +32,12 @@ export default function SignupForm() {
       const response = await fetch("http://localhost:5000/api/v1/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        //!save one day of debugging reading this
+        // The issue was your login request used fetch without credentials: 'include',
+        //  so the token cookie was never sent to the backend on
+        // subsequent requests. Postman worked because it always sends cookies once they're set.
+        //  Your frontend didn’t.
+        credentials: "include",
         body: JSON.stringify(data),
       });
 

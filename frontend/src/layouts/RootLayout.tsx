@@ -17,24 +17,25 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 export function RootLayout() {
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const isMobile = useMobile();
 
-  // close dropdown on outside click (desktop only)
+  // Close dropdown on outside click (desktop only)
   useEffect(() => {
     if (isMobile) return;
-    function handler(e: MouseEvent) {
+    const handler = (e: MouseEvent) => {
       if (
         dropdownRef.current?.contains(e.target as Node) ||
         buttonRef.current?.contains(e.target as Node)
-      )
+      ) {
         return;
+      }
       setIsOpen(false);
-    }
+    };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, [isMobile]);
@@ -44,8 +45,11 @@ export function RootLayout() {
     navigate("/");
   };
 
-  const name = user?.name ?? "User";
-  console.log(user?.name);
+  // While context is fetching, you can show spinner or just nothing
+  if (loading) return null;
+
+  // once loaded
+  const name = user!.name;
 
   return (
     <>
@@ -58,7 +62,6 @@ export function RootLayout() {
             <img src={logo} alt="Logo" />
             <span className="text-3xl">Your Notes</span>
           </Link>
-
           <div className="flex items-center space-x-5 lg:space-x-10">
             <ModeToggle />
             <Button
@@ -129,8 +132,18 @@ export function RootLayout() {
           </DialogContent>
         </Dialog>
 
-        <div className="absolute inset-0 bg-black/10" />
-        <Outlet />
+        <main
+          className="relative min-h-screen w-full overflow-x-hidden bg-cover bg-center md:items-center"
+          style={{ backgroundImage: `url(${image})` }}
+        >
+          {/* dark overlay */}
+          <div className="absolute inset-0 z-0 bg-black/10" />
+
+          {/* centered, untinted content box */}
+          <div className="relative z-10 mx-auto my-12 w-full max-w-xl p-6">
+            <Outlet />
+          </div>
+        </main>
       </main>
     </>
   );
