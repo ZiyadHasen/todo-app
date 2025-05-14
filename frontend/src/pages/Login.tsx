@@ -8,16 +8,19 @@ import { loginSchema } from "@/validationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "@/hooks/useAuth"; // Import context-driven auth
 
 type FormData = {
   email: string;
   password: string;
 };
 
-export default function SignupForm() {
+export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, refreshUser } = useAuth(); // get context methods
+
   const {
     register,
     handleSubmit,
@@ -29,14 +32,14 @@ export default function SignupForm() {
   const onFormSubmit = async (data: FormData) => {
     setLoading(true);
     try {
+      //!save one day of debugging reading this
+      // The issue was your login request used fetch without credentials: 'include',
+      // so the token cookie was never sent to the backend on
+      // subsequent requests. Postman worked because it always sends cookies once they're set.
+      // Your frontend didn’t.
       const response = await fetch("http://localhost:5000/api/v1/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        //!save one day of debugging reading this
-        // The issue was your login request used fetch without credentials: 'include',
-        //  so the token cookie was never sent to the backend on
-        // subsequent requests. Postman worked because it always sends cookies once they're set.
-        //  Your frontend didn’t.
         credentials: "include",
         body: JSON.stringify(data),
       });
@@ -46,14 +49,16 @@ export default function SignupForm() {
       }
 
       const result = await response.json();
+      // Now that the cookie is set, refresh user in context
+      await refreshUser();
+
       toast.success("Login successful!"); // Show success toast
-      // console.log("login successful:", result);
-      navigate("/app"); // Redirect to app
+      navigate("/app"); // Redirect to app with user in context
       return result;
     } catch (error: unknown) {
       if (error instanceof Error) {
         // console.error("login failed:", error);
-        toast.error(`Login failed , check your email and password `);
+        toast.error(`Login failed, check your email and password`);
       } else {
         // console.error("login failed:", error);
         toast.error("Login failed");

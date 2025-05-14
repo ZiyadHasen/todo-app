@@ -9,7 +9,7 @@ import Error from "./pages/Error";
 import AuthLayout from "./layouts/AuthLayout";
 import { ToastContainer } from "react-toastify";
 import { RootLayout } from "./layouts/RootLayout";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthProvider";
 
 const router = createBrowserRouter([
   {

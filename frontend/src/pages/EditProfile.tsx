@@ -1,23 +1,10 @@
 "use client";
 
-import React, { useState, forwardRef } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { CustomInput } from "@/components/custom/CustomInput";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-
-// Move CustomInput outside to preserve component identity and prevent remounts
-const CustomInput = forwardRef<
-  HTMLInputElement,
-  React.InputHTMLAttributes<HTMLInputElement>
->(({ className = "", ...props }, ref) => (
-  <input
-    ref={ref}
-    className={`w-full rounded-md border border-slate-200 px-3 py-2 text-slate-600 placeholder-slate-400 focus:ring-2 focus:ring-slate-300 focus:outline-none ${className}`}
-    style={{ boxShadow: "none" }}
-    {...props}
-  />
-));
-CustomInput.displayName = "CustomInput";
+import { Eye, EyeOff } from "lucide-react";
+import React, { useState } from "react";
 
 export default function UserInfoForm() {
   const [showPassword, setShowPassword] = useState(false);

@@ -1,5 +1,3 @@
-// src/layouts/RootLayout.tsx
-"use client";
 import image from "@/assets/Image/bigcover.png";
 import logo from "@/assets/Image/logo-2.svg";
 import userIcon from "@/assets/Image/user.svg";
@@ -11,10 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+
 import { useMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/hooks/useAuth";
+
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
 
 export function RootLayout() {
   const { user, loading, logout } = useAuth();
@@ -49,7 +49,8 @@ export function RootLayout() {
   if (loading) return null;
 
   // once loaded
-  const name = user!.name;
+  const name = user?.name ?? "Guest";
+  console.log(name);
 
   return (
     <>
@@ -68,6 +69,7 @@ export function RootLayout() {
               ref={buttonRef}
               onClick={() => setIsOpen((o) => !o)}
               variant="ghost"
+              className="cursor-pointer"
             >
               <img src={userIcon} alt="User" />
             </Button>
