@@ -20,12 +20,12 @@ export const getUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   // *we just can do this the later is more secure
   // const { name, email, phone, birthYear } = req.body;
-  const allowed = ["name", "email", "phone", "birthYear"];
+  const allowed = ["name", "email", "phone", "birthYear", "password"];
   const updateData: Record<string, any> = {};
   allowed.forEach((key) => {
     if (req.body[key]) updateData[key] = req.body[key];
   });
-  const { name, email, phone, birthYear } = updateData;
+  const { name, email, phone, birthYear, password } = updateData;
 
   const updatedUser = await User.findByIdAndUpdate(
     { _id: req.user?.userId },

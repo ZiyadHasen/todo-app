@@ -22,19 +22,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // NEW: login and immediately refresh context
-  const login = async (email: string, password: string) => {
-    const res = await fetch("/api/v1/auth/login", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    if (!res.ok) throw new Error("Login failed");
-    // cookie’s set by server, now fetch user payload
-    await refreshUser();
-  };
-
   const logout = async () => {
     try {
       await fetch("/api/v1/auth/logout", {
@@ -59,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     user,
     isAuthenticated: !!user,
     loading,
-    login,
+
     logout,
     refreshUser,
   };

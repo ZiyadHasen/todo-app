@@ -112,6 +112,11 @@ export const validateUpdateUserInput = withValidationErrors([
     .withMessage(
       `Birth year must be between 1900 and ${new Date().getFullYear()}`
     ),
+  // allow password to be undefined, null, OR empty string without validating length
+  body("password")
+    .optional({ nullable: true, checkFalsy: true })
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters"),
 ]);
 
 export const validateTodoInput = withValidationErrors([

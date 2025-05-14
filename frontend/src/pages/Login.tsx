@@ -19,7 +19,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login, refreshUser } = useAuth(); // get context methods
+  const { refreshUser } = useAuth();
 
   const {
     register,
