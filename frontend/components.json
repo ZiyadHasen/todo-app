@@ -8,6 +8,7 @@
     "css": "src/index.css",
     "baseColor": "neutral",
     "cssVariables": true,
+
     "prefix": ""
   },
   "aliases": {

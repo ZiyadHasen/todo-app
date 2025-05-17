@@ -1,4 +1,4 @@
-import image from "@/assets/Image/bigcover.png";
+import DashboardImage from "@/assets/Image/dashboardcover.png";
 import logo from "@/assets/Image/logo-2.svg";
 import userIcon from "@/assets/Image/user.svg";
 import { ModeToggle } from "@/components/custom/modeToggle";
@@ -31,9 +31,8 @@ export function RootLayout() {
       if (
         dropdownRef.current?.contains(e.target as Node) ||
         buttonRef.current?.contains(e.target as Node)
-      ) {
+      )
         return;
-      }
       setIsOpen(false);
     };
     document.addEventListener("mousedown", handler);
@@ -45,16 +44,12 @@ export function RootLayout() {
     navigate("/");
   };
 
-  // While context is fetching, you can show spinner or just nothing
   if (loading) return null;
-
-  // once loaded
   const name = user?.name ?? "Guest";
-  console.log(name);
 
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full bg-white">
+      <nav className="sticky top-0 z-50 w-full bg-white dark:bg-black">
         <div className="flex h-[62px] items-center justify-between px-6 lg:px-12">
           <Link
             to="/app"
@@ -63,8 +58,11 @@ export function RootLayout() {
             <img src={logo} alt="Logo" />
             <span className="text-3xl">Your Notes</span>
           </Link>
-          <div className="flex items-center space-x-5 lg:space-x-10">
+
+          {/* make this relative so dropdown anchors here */}
+          <div className="relative flex items-center space-x-5 lg:space-x-10">
             <ModeToggle />
+
             <Button
               ref={buttonRef}
               onClick={() => setIsOpen((o) => !o)}
@@ -73,40 +71,40 @@ export function RootLayout() {
             >
               <img src={userIcon} alt="User" />
             </Button>
+
+            {/* Desktop dropdown – fixed under nav */}
+            {!isMobile && isOpen && (
+              <div
+                ref={dropdownRef}
+                className="fixed top-[70px] right-4 z-50 w-64 overflow-hidden rounded-lg bg-white shadow-lg"
+              >
+                <h3 className="px-4 pt-4 pb-2 text-center text-xl text-[#D375B9]">
+                  Hi {name}
+                </h3>
+                <div className="space-y-2 p-3 text-xl">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full border-0 bg-[#7C8495] text-[15px] text-white hover:bg-gray-500"
+                  >
+                    <Link to="/app/edit-profile">Modify User Info</Link>
+                  </Button>
+                  <Button
+                    className="w-full border-0 bg-[#D375B9] text-[15px] text-white hover:bg-[#AD5B95]"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </nav>
 
-      <main
-        className="relative z-20 flex min-h-screen w-full justify-center overflow-x-hidden bg-cover bg-center md:items-center"
-        style={{ backgroundImage: `url(${image})` }}
-      >
-        {/* Desktop Dropdown */}
-        {!isMobile && isOpen && (
-          <div
-            ref={dropdownRef}
-            className="absolute top-0 right-2 z-10 mt-2 w-64 overflow-hidden rounded-lg bg-white shadow-lg"
-          >
-            <h3 className="px-4 pt-4 pb-2 text-center text-xl text-[#D375B9]">
-              Hi {name}
-            </h3>
-            <div className="space-y-2 p-3 text-xl">
-              <Button
-                asChild
-                variant="outline"
-                className="w-full border-0 bg-[#7C8495] text-[15px] text-white hover:bg-gray-500"
-              >
-                <Link to="/app/edit-profile">Modify User Info</Link>
-              </Button>
-              <Button
-                className="w-full border-0 bg-[#D375B9] text-[15px] text-white hover:bg-[#AD5B95]"
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            </div>
-          </div>
-        )}
+      <main className="relative min-h-screen dark:bg-black">
+        {/* full‑width + natural height */}
+        <img src={DashboardImage} alt="bg image" className="h-auto w-full" />
 
         {/* Mobile Modal */}
         <Dialog open={isMobile && isOpen} onOpenChange={setIsOpen}>
@@ -134,18 +132,10 @@ export function RootLayout() {
           </DialogContent>
         </Dialog>
 
-        <main
-          className="relative min-h-screen w-full overflow-x-hidden bg-cover bg-center md:items-center"
-          style={{ backgroundImage: `url(${image})` }}
-        >
-          {/* dark overlay */}
-          <div className="absolute inset-0 z-0 bg-black/10" />
-
-          {/* centered, untinted content box */}
-          <div className="relative z-10 mx-auto my-12 w-full max-w-xl p-6">
-            <Outlet />
-          </div>
-        </main>
+        {/* Centered content */}
+        <div className="absolute inset-0 z-10 flex w-full justify-center">
+          <Outlet />
+        </div>
       </main>
     </>
   );

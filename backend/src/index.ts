@@ -45,7 +45,7 @@ app.use(
     origin: "http://localhost:5173",
     credentials: true, // allows the browser to send cookies
     // if you specify methods, include GET:
-    methods: ["GET", "POST",'PATCH', "OPTIONS"],
+    methods: ["GET", "POST", "PATCH", "OPTIONS"],
   })
 );
 

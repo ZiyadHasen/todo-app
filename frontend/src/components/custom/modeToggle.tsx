@@ -1,5 +1,6 @@
 "use client";
 
+type Theme = "light" | "dark" | "system";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useTheme, type Theme } from "@/theme/ThemeProvider";
+import { useTheme } from "@/theme/ThemeProvider";
 import { Check, Moon, Sun } from "lucide-react";
 
 export function ModeToggle() {
@@ -38,14 +39,18 @@ export function ModeToggle() {
           <span className="sr-only">Toggle theme</span>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-white dark:bg-black">
+      <DropdownMenuContent
+        align="end"
+        className="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100"
+      >
         {themes.map((t) => (
           <DropdownMenuItem
             key={t.value}
             onClick={() => setTheme(t.value)}
             className={cn(
-              "flex cursor-pointer items-center justify-between gap-2 text-gray-900 dark:text-gray-100",
-              theme === t.value && "font-medium",
+              "flex cursor-pointer items-center justify-between gap-2 px-2 py-1",
+              theme === t.value && "font-semibold",
+              "hover:bg-gray-100 dark:hover:bg-gray-800",
             )}
           >
             <span>{t.label}</span>

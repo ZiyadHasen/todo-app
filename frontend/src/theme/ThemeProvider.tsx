@@ -1,39 +1,50 @@
-"use client";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
-import type React from "react";
+type Theme = "light" | "dark" | "system";
 
-import { createContext, useContext, useState, useEffect } from "react";
+interface ThemeContextType {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}
 
-export type Theme = "light" | "dark" | "system";
-
-const ThemeContext = createContext({
+const ThemeContext = createContext<ThemeContextType>({
   theme: "system",
-  setTheme: (theme: Theme) => {},
+  setTheme: () => {},
 });
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>("system");
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") as Theme | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-    } else {
-      setTheme("system");
-    }
+    const saved = localStorage.getItem("theme") as Theme;
+    if (saved) setTheme(saved);
   }, []);
 
   useEffect(() => {
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
-      document.documentElement.setAttribute("data-theme", systemTheme);
-    } else if (theme === "dark" || theme === "light") {
-      document.documentElement.setAttribute("data-theme", theme);
-    }
+    const root = document.documentElement;
+    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const applied = theme === "system" ? (isDark ? "dark" : "light") : theme;
+
+    root.classList.remove("light", "dark");
+    root.classList.add(applied);
     localStorage.setItem("theme", theme);
+
+    if (theme === "system") {
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+      const handler = (e: MediaQueryListEvent) => {
+        const newMode = e.matches ? "dark" : "light";
+        root.classList.remove("light", "dark");
+        root.classList.add(newMode);
+      };
+      media.addEventListener("change", handler);
+      return () => media.removeEventListener("change", handler);
+    }
   }, [theme]);
 
   return (
