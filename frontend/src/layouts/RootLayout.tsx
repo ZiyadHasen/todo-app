@@ -49,81 +49,92 @@ export function RootLayout() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full bg-white dark:bg-black">
-        <div className="flex h-[62px] items-center justify-between px-6 lg:px-12">
+      <nav className="bg-background-default font-josefin sticky top-0 z-50 w-full">
+        <div className="relative flex h-[62px] items-center justify-between px-4 lg:px-12">
           <Link
             to="/app"
-            className="flex items-center space-x-2 text-[#D375B9]"
+            className="text-text-primary flex items-center space-x-2"
           >
             <img src={logo} alt="Logo" />
-            <span className="text-3xl">Your Notes</span>
+            <span className="text-text-primary text-2xl lg:text-3xl">
+              Your Notes
+            </span>
           </Link>
 
-          {/* make this relative so dropdown anchors here */}
+          {/* make this  so dropdown anchors here */}
           <div className="relative flex items-center space-x-5 lg:space-x-10">
             <ModeToggle />
 
-            <Button
-              ref={buttonRef}
-              onClick={() => setIsOpen((o) => !o)}
-              variant="ghost"
-              className="cursor-pointer"
-            >
-              <img src={userIcon} alt="User" />
-            </Button>
-
-            {/* Desktop dropdown – fixed under nav */}
-            {!isMobile && isOpen && (
-              <div
-                ref={dropdownRef}
-                className="fixed top-[70px] right-4 z-50 w-64 overflow-hidden rounded-lg bg-white shadow-lg"
+            {/* isolate button+dropdown in its own relative box */}
+            <div className="relative">
+              <Button
+                ref={buttonRef}
+                onClick={() => setIsOpen((o) => !o)}
+                variant="ghost"
+                className="cursor-pointer p-0 hover:bg-transparent focus:ring-0 focus:outline-none"
               >
-                <h3 className="px-4 pt-4 pb-2 text-center text-xl text-[#D375B9]">
-                  Hi {name}
-                </h3>
-                <div className="space-y-2 p-3 text-xl">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full border-0 bg-[#7C8495] text-[15px] text-white hover:bg-gray-500"
-                  >
-                    <Link to="/app/edit-profile">Modify User Info</Link>
-                  </Button>
-                  <Button
-                    className="w-full border-0 bg-[#D375B9] text-[15px] text-white hover:bg-[#AD5B95]"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Button>
+                <img src={userIcon} alt="User" className="block" />
+              </Button>
+
+              {/* dropdown will never push or shift anything else */}
+              {isOpen && !isMobile && (
+                <div
+                  ref={dropdownRef}
+                  className="bg-background-default absolute top-16 right-0 z-50 mt-2 w-64 overflow-hidden rounded-lg shadow-lg"
+                >
+                  <h3 className="text-text-primary px-4 pt-4 pb-2 text-center text-2xl font-medium">
+                    Hello {name}
+                  </h3>
+                  <div className="space-y-2 p-3 text-xl">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="text-text-inverted bg-btn-secondary w-full border-0 text-[15px] hover:bg-gray-500"
+                    >
+                      <Link to="/app/edit-profile">Modify User Info</Link>
+                    </Button>
+                    <Button
+                      className="text-text-inverted bg-accent w-full border-0 text-[15px] hover:bg-[#AD5B95]"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </nav>
 
-      <main className="relative min-h-screen dark:bg-black">
+      <main className="relative min-h-screen">
         {/* full‑width + natural height */}
-        <img src={DashboardImage} alt="bg image" className="h-auto w-full" />
+        <img src={DashboardImage} alt="bg image" className="h-48 w-full" />
 
         {/* Mobile Modal */}
         <Dialog open={isMobile && isOpen} onOpenChange={setIsOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle className="text-center text-[#D375B9]">
-                Hi {name}
+              <DialogTitle className="text-text-primary text-center text-2xl font-medium">
+                Hello {name}
               </DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              <Button
-                asChild
-                variant="outline"
-                className="w-full bg-[#7C8495] text-white hover:bg-gray-500"
+              <Link
+                to="/app/edit-profile"
+                onClick={() => setIsOpen(false)}
+                className="block w-full"
               >
-                <Link to="/app/edit-profile">Modify User Info</Link>
-              </Button>
+                <Button
+                  variant="outline"
+                  className="text-text-inverted bg-btn-secondary w-full hover:bg-gray-500"
+                >
+                  Modify User Info
+                </Button>
+              </Link>
+
               <Button
-                className="w-full bg-[#D375B9] text-white hover:bg-[#AD5B95]"
+                className="text-text-inverted bg-accent w-full hover:bg-[#AD5B95]"
                 onClick={handleLogout}
               >
                 Logout
@@ -133,7 +144,7 @@ export function RootLayout() {
         </Dialog>
 
         {/* Centered content */}
-        <div className="absolute inset-0 z-10 flex w-full justify-center">
+        <div className="absolute inset-0 z-10 my-12 flex w-full justify-center">
           <Outlet />
         </div>
       </main>

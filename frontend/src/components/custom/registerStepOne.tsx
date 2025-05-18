@@ -31,8 +31,8 @@ export default function SignupFormOne({
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
-    <div className="flex h-[450px] w-[340px] flex-col justify-center rounded-md bg-white p-4 sm:h-[500px] sm:w-[400px] sm:p-6 lg:h-[600px] lg:w-[490px]">
-      <h1 className="mb-6 text-center text-3xl font-bold text-[#d176b6] sm:mb-8 sm:text-4xl">
+    <div className="bg-background-default flex flex-col justify-center rounded-b-md p-4 sm:h-[580px] sm:w-[400px] sm:rounded-md sm:p-6 lg:h-[600px] lg:w-[490px]">
+      <h1 className="text-accent my-4 text-center text-2xl font-bold sm:mb-8 sm:text-4xl">
         Signup
       </h1>
 
@@ -41,7 +41,7 @@ export default function SignupFormOne({
         <div className="space-y-1 sm:space-y-2">
           <label
             htmlFor="email"
-            className="block text-sm text-gray-600 sm:text-base"
+            className="text-text-gray block text-sm sm:text-base"
           >
             Email
           </label>
@@ -49,10 +49,10 @@ export default function SignupFormOne({
             id="email"
             type="email"
             {...register("email")}
-            className="h-10 w-full rounded-md border border-gray-200 focus:border-2 focus:border-[#d176b6] focus:ring-0 focus:outline-none sm:h-12"
+            className="border-border-default focus:border-focus-outline h-10 w-full rounded-md border focus:border-2 focus:ring-0 focus:outline-none sm:h-12"
           />
           {errors.email && (
-            <span className="text-sm text-red-500">{errors.email.message}</span>
+            <span className="text-error text-sm">{errors.email.message}</span>
           )}
         </div>
 
@@ -60,7 +60,7 @@ export default function SignupFormOne({
         <div className="space-y-1 sm:space-y-2">
           <label
             htmlFor="password"
-            className="block text-sm text-gray-600 sm:text-base"
+            className="text-text-gray block text-sm sm:text-base"
           >
             Password
           </label>
@@ -69,12 +69,12 @@ export default function SignupFormOne({
               id="password"
               type={showPassword ? "text" : "password"}
               {...register("password")}
-              className="h-10 w-full rounded-md border border-gray-200 pr-10 focus:border-2 focus:border-[#d176b6] focus:ring-0 focus:outline-none sm:h-12"
+              className="border-border-default focus:border-focus-outline h-10 w-full rounded-md border pr-10 focus:border-2 focus:ring-0 focus:outline-none sm:h-12"
             />
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500"
+              className="text-text-gray absolute top-1/2 right-3 -translate-y-1/2"
               aria-label="Toggle password visibility"
             >
               {showPassword ? (
@@ -85,7 +85,7 @@ export default function SignupFormOne({
             </button>
           </div>
           {errors.password && (
-            <span className="text-sm text-red-500">
+            <span className="text-error text-sm">
               {errors.password.message}
             </span>
           )}
@@ -95,7 +95,7 @@ export default function SignupFormOne({
         <div className="space-y-1 sm:space-y-2">
           <label
             htmlFor="confirmPassword"
-            className="block text-sm text-gray-600 sm:text-base"
+            className="text-text-gray block text-sm sm:text-base"
           >
             Confirm Password
           </label>
@@ -104,12 +104,12 @@ export default function SignupFormOne({
               id="confirmPassword"
               type={showConfirmPassword ? "text" : "password"}
               {...register("confirmPassword")}
-              className="h-10 w-full rounded-md border border-gray-200 pr-10 focus:border-2 focus:border-[#d176b6] focus:ring-0 focus:outline-none sm:h-12"
+              className="border-border-default focus:border-focus-outline h-10 w-full rounded-md border pr-10 focus:border-2 focus:ring-0 focus:outline-none sm:h-12"
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500"
+              className="text-text-gray absolute top-1/2 right-3 -translate-y-1/2"
               aria-label="Toggle confirm password visibility"
             >
               {showConfirmPassword ? (
@@ -120,7 +120,7 @@ export default function SignupFormOne({
             </button>
           </div>
           {errors.confirmPassword && (
-            <span className="text-sm text-red-500">
+            <span className="text-error text-sm">
               {errors.confirmPassword.message}
             </span>
           )}
@@ -130,16 +130,17 @@ export default function SignupFormOne({
         <Button
           type="button"
           onClick={onNext}
-          className="mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md bg-[#d176b6] text-sm text-white hover:bg-[#c065a5] sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
+          className="bg-accent text-text-inverted hover:bg-accent/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
-          Next <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
+          Complete signup{" "}
+          <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
         </Button>
       </form>
 
       <div className="mt-4 text-center sm:mt-6">
-        <p className="text-sm text-gray-600 sm:text-base">
+        <p className="text-text-gray text-sm sm:text-base">
           Already have an account!{" "}
-          <Link to="/" className="text-[#d176b6] hover:underline">
+          <Link to="/" className="text-text-primary hover:underline">
             Login
           </Link>
         </p>

@@ -34,7 +34,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
     >
       {todo.status === false ? (
         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-purple-500 to-pink-500">
-          <Check className="h-3 w-3 text-white" />
+          <Check className="text-text-inverted h-3 w-3" />
         </div>
       ) : (
         <div className="h-5 w-5 rounded-full border border-gray-200 transition-colors hover:border-purple-500" />

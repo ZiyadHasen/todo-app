@@ -1,63 +1,53 @@
+// src/components/EditProfileForm.tsx
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
 import { CustomInputField } from "@/components/custom/CustomInputField";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { Eye, EyeOff } from "lucide-react";
-import React, { useState, useEffect } from "react";
+
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import type { z } from "zod";
+import { userSchemaModify } from "@/validationSchema";
 
-export default function UserInfoForm() {
-  const [showPassword, setShowPassword] = useState(false);
+export type UserFormValues = z.infer<typeof userSchemaModify>;
+
+const EditProfileForm = () => {
   const { user, refreshUser } = useAuth();
-  const navigate = useNavigate(); // Initialize useNavigate
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    name: "",
-    phone: "",
-    birthYear: "",
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<UserFormValues>({
+    resolver: zodResolver(userSchemaModify),
   });
 
   useEffect(() => {
     if (user) {
-      setFormData({
+      reset({
         email: user.email || "",
         password: "",
         name: user.name || "",
         phone: user.phone || "",
-        birthYear: user.birthYear ? String(user.birthYear) : "",
+        birthYear: user.birthYear ?? new Date().getFullYear(),
       });
     }
-  }, [user]);
+  }, [user, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const payload: {
-      email: string;
-      name: string;
-      phone: string;
-      birthYear: number;
-      password?: string;
-    } = {
-      email: formData.email,
-      name: formData.name,
-      phone: formData.phone,
-      birthYear: Number(formData.birthYear),
-    };
-
-    if (formData.password.trim() !== "") {
-      payload.password = formData.password;
-    }
-
+  const onSubmit = async (data: UserFormValues) => {
     try {
+      const payload: Partial<UserFormValues> = {
+        email: data.email,
+        name: data.name,
+        phone: data.phone,
+        birthYear: data.birthYear,
+      };
+      if (data.password) payload.password = data.password;
+
       const response = await fetch(
         "http://localhost:5000/api/v1/users/update-user",
         {
@@ -67,96 +57,80 @@ export default function UserInfoForm() {
           body: JSON.stringify(payload),
         },
       );
-
       if (!response.ok) throw new Error(`Update failed: ${response.status}`);
-
       toast.success("Profile updated successfully!");
       await refreshUser();
-
-      // Redirect to /app after successful update
       navigate("/app");
     } catch (error) {
-      console.error("Update error:", error);
+      console.error(error);
       toast.error("Could not update profile.");
     }
   };
 
   return (
-    <div className="mx-auto w-full max-w-md">
-      <div className="mb-4 rounded-lg bg-white p-6 shadow-md">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-[#D375B9]">
-          Modify User Information
-        </h1>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <CustomInputField
-            id="email"
-            label="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            type="email"
-            placeholder="Enter your email"
-          />
+    <div className="font-josefin bg-background-default mx-3 flex w-full max-w-sm flex-col self-start rounded-lg px-4 py-6 shadow-2xl lg:mx-auto lg:max-w-lg lg:px-6 lg:py-8">
+      <h1 className="text-text-primary mb-6 text-center text-xl font-semibold lg:text-2xl">
+        Modify User Information
+      </h1>
+      <form
+        className="space-y-1.5 lg:space-y-3"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <CustomInputField
+          id="email"
+          label="Email"
+          type="email"
+          {...register("email")}
+        />
+        {errors.email && (
+          <p className="text-error text-sm">{errors.email.message}</p>
+        )}
 
-          <div className="space-y-2">
-            <CustomInputField
-              id="password"
-              label="Password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              className="relative pr-10"
-            />
+        <CustomInputField
+          id="password"
+          label="Password"
+          type="password"
+          {...register("password")}
+        />
+        {errors.password && (
+          <p className="text-error text-sm">{errors.password.message}</p>
+        )}
 
-            <button
-              type="button"
-              className="absolute right-1 -mt-10 flex items-center text-slate-400"
-              onClick={() => setShowPassword((prev) => !prev)}
-              tabIndex={-1}
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
+        <CustomInputField id="name" label="Name" {...register("name")} />
+        {errors.name && (
+          <p className="text-error text-sm">{errors.name.message}</p>
+        )}
 
-          <CustomInputField
-            id="name"
-            label="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter your name"
-          />
+        <CustomInputField
+          id="phone"
+          label="Phone"
+          type="tel"
+          {...register("phone")}
+        />
+        {errors.phone && (
+          <p className="text-error text-sm">{errors.phone.message}</p>
+        )}
 
-          <CustomInputField
-            id="phone"
-            label="Phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            type="tel"
-            placeholder="Enter your phone number"
-          />
+        <CustomInputField
+          id="birthYear"
+          label="Birth Year"
+          type="number"
+          {...register("birthYear", { valueAsNumber: true })}
+        />
+        {errors.birthYear && (
+          <p className="text-error text-sm">{errors.birthYear.message}</p>
+        )}
 
-          <CustomInputField
-            id="birthYear"
-            label="Birth Year"
-            name="birthYear"
-            value={formData.birthYear}
-            onChange={handleChange}
-            type="text"
-            placeholder="Enter your birth year"
-          />
-
-          <Button
-            type="submit"
-            className="w-full cursor-pointer rounded-lg bg-[#D375B9] py-3 text-lg font-medium text-white"
-          >
-            Save Changes
-          </Button>
-        </form>
-      </div>
+        <Button
+          type="submit"
+          className="bg-accent hover:bg-accent/90 text-text-inverted mt-4 h-12 w-full cursor-pointer rounded-lg text-lg font-medium"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Saving..." : "Save Changes"}
+        </Button>
+      </form>
     </div>
   );
-}
+};
+
+export default EditProfileForm;

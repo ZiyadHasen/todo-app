@@ -41,7 +41,7 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100"
+        className="bg-background-default text-text-black"
       >
         {themes.map((t) => (
           <DropdownMenuItem
@@ -50,7 +50,7 @@ export function ModeToggle() {
             className={cn(
               "flex cursor-pointer items-center justify-between gap-2 px-2 py-1",
               theme === t.value && "font-semibold",
-              "hover:bg-gray-100 dark:hover:bg-gray-800",
+              "hover:bg-background-subtle",
             )}
           >
             <span>{t.label}</span>

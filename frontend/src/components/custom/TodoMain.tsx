@@ -28,7 +28,7 @@ const TodoMain: React.FC<TodoMainProps> = ({
   onSaveEdit,
   onCancelEdit,
 }) => (
-  <div className="overflow-hidden rounded-md bg-white shadow-lg">
+  <div className="bg-background-default overflow-hidden rounded-md shadow-lg">
     {loading ? (
       <div className="p-4 text-center text-gray-500">Loading todos...</div>
     ) : todos.length === 0 ? (

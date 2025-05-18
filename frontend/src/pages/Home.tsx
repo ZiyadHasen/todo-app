@@ -191,7 +191,7 @@ export default function TodoApp() {
   const activeTodosCount = todos.filter((todo) => !todo.completed).length;
 
   return (
-    <div className="z-10 flex w-full items-center justify-center">
+    <div className="z-10 flex w-full justify-center">
       <div className="w-full max-w-md">
         {error && (
           <div className="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
