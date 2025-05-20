@@ -15,8 +15,9 @@ import { userSchemaModify } from "@/validationSchema";
 export type UserFormValues = z.infer<typeof userSchemaModify>;
 
 const EditProfileForm = () => {
-  const { user, refreshUser } = useAuth();
+  const { user, updateLocalUser } = useAuth();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -48,7 +49,7 @@ const EditProfileForm = () => {
       };
       if (data.password) payload.password = data.password;
 
-      const response = await fetch(
+      const res = await fetch(
         "http://localhost:5000/api/v1/users/update-user",
         {
           method: "PATCH",
@@ -57,12 +58,16 @@ const EditProfileForm = () => {
           body: JSON.stringify(payload),
         },
       );
-      if (!response.ok) throw new Error(`Update failed: ${response.status}`);
+      if (!res.ok) throw new Error(`Update failed: ${res.status}`);
+      const { user: updated } = await res.json(); // assume API returns { user: {…} }
+
+      // 🏎️ Merge updated fields locally—no re‑fetch
+      updateLocalUser(updated);
+
       toast.success("Profile updated successfully!");
-      await refreshUser();
       navigate("/app");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       toast.error("Could not update profile.");
     }
   };

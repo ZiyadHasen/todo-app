@@ -10,6 +10,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import { ToastContainer } from "react-toastify";
 import { RootLayout } from "./layouts/RootLayout";
 import { AuthProvider } from "./context/AuthProvider";
+import { TodoProvider } from "./context/TodoContext";
 
 const router = createBrowserRouter([
   {
@@ -37,8 +38,10 @@ export default function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <ToastContainer />
-        <RouterProvider router={router} />
+        <TodoProvider>
+          <ToastContainer />
+          <RouterProvider router={router} />
+        </TodoProvider>
       </ThemeProvider>
     </AuthProvider>
   );

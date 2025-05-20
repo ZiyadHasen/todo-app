@@ -4,18 +4,31 @@ import Todo from "../models/Todo";
 // Create a new todo
 export const createTodo = async (req: Request, res: Response) => {
   try {
-    const { text } = req.body;
+    const { text, status = true } = req.body;
+
     const newTodo = await Todo.create({
       text,
+      status,
       user: req.user?.userId,
     });
+
     const todoToReturn = {
       text: newTodo.text,
       status: newTodo.status,
       user: newTodo.user,
     };
+
     res.status(200).json(todoToReturn);
-  } catch (error) {
+  } catch (error: any) {
+    // MongoDB duplicate key error code
+    if (error.code === 11000) {
+      res.status(400).json({
+        success: false,
+        message: "Todo with this text already exists for the user",
+      });
+      return;
+    }
+
     res.status(500).json({
       message: "Failed to create todo",
       error: error instanceof Error ? error.message : "Unknown error",
@@ -73,19 +86,6 @@ export const getCompletedTodos = async (req: Request, res: Response) => {
     res
       .status(200)
       .json({ msg: "all completedTodos returned", completedTodos });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error });
-  }
-};
-// !get single to do passing the id param
-export const getTodo = async (req: Request, res: Response) => {
-  try {
-    const todo = await Todo.findById(req.params.id);
-    if (!todo) {
-      res.status(404).json({ msg: "Todo not found" });
-      return;
-    }
-    res.status(200).json({ todo });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
@@ -205,7 +205,8 @@ export const updateTodoStatus = async (
   next: NextFunction
 ) => {
   try {
-    const { todoId, status } = req.body;
+    const { status } = req.body;
+    const { id } = req.params;
 
     // 1. Validate input
     if (typeof status !== "boolean") {
@@ -213,22 +214,27 @@ export const updateTodoStatus = async (
         success: false,
         message: "Valid boolean status is required",
       });
-      return;
     }
 
-    // 2. Find and update the todo
     const updatedTodo = await Todo.findOneAndUpdate(
       {
-        _id: todoId,
-        user: req.user?.userId, // Ensure ownership
+        _id: id,
+        user: req.user?.userId,
       },
       { status },
       {
         new: true,
         runValidators: true,
-        projection: { text: 1, status: 1 }, // Only return needed fields
+        projection: { text: 1, status: 1 },
       }
     );
+
+    if (!updatedTodo) {
+      res.status(404).json({
+        success: false,
+        message: "Todo not found or you don't have permission",
+      });
+    }
 
     // 3. Handle not found case
     if (!updatedTodo) {
@@ -238,8 +244,6 @@ export const updateTodoStatus = async (
       });
       return;
     }
-
-    // 4. Success response
     res.status(200).json({
       success: true,
       message: "Todo status updated successfully",

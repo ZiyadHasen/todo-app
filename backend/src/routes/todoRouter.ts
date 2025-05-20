@@ -5,7 +5,6 @@ import {
   deleteTodo,
   getActiveTodos,
   getCompletedTodos,
-  getTodo,
   getTodos,
   updateTodoStatus,
   updateTodoTitle,
@@ -23,13 +22,13 @@ router.post("/create-todo", ...validateTodoInput, createTodo);
 router.get("/all-todos", getTodos);
 router.get("/active-todos", getActiveTodos);
 router.get("/completed-todos", getCompletedTodos);
-
-router.patch("/update-status", updateTodoStatus);
-
 router.delete("/completed", deleteCompletedTodos);
+
+router.patch("/update-status/:id", updateTodoStatus);
+
 router
   .route("/:id")
-  .get(...validateTodoIdParam, getTodo)
   .patch(...validateTodoIdParam, ...validateUpdateTodoInput, updateTodoTitle)
   .delete(...validateTodoIdParam, deleteTodo);
+
 export default router;

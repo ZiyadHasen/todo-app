@@ -29,11 +29,11 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   const { name, email, phone, birthYear, password } = req.body;
-  console.log(
-    `Received update data - Name: ${name}, Email: ${email}, Phone: ${phone}, Birth Year: ${birthYear}, Password: ${
-      password ? "Provided" : "Not Provided"
-    }`
-  );
+  // console.log(
+  //   `Received update data - Name: ${name}, Email: ${email}, Phone: ${phone}, Birth Year: ${birthYear}, Password: ${
+  //     password ? "Provided" : "Not Provided"
+  //   }`
+  // );
 
   // Build your $set payload
   const updateData: Partial<UserType> = {
