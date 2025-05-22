@@ -2,6 +2,7 @@
 import { useCallback } from "react";
 import { updateTodoStatus, updateTodoTitle } from "@/services/todoService";
 import { useTodoContext } from "@/context/TodoContext";
+import { toast } from "react-toastify";
 
 export const useUpdateTodo = () => {
   const { setTodos, setIsLoading, setError } = useTodoContext();
@@ -18,6 +19,7 @@ export const useUpdateTodo = () => {
             todo._id === id ? { ...todo, status: newStatus } : todo,
           ),
         );
+        toast.success("🎉 Todo status changed !");
       } catch (err: unknown) {
         setError(
           err instanceof Error ? err.message : "Failed to update status",
@@ -41,6 +43,7 @@ export const useUpdateTodo = () => {
             todo._id === id ? { ...todo, text: newTitle } : todo,
           ),
         );
+        toast.success("Todo updated successfully! 🎉");
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "Failed to update title");
       } finally {

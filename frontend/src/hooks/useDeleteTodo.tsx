@@ -5,6 +5,7 @@ import {
   deleteCompletedTodos as apiClearCompletedTodos,
 } from "@/services/todoService";
 import { useTodoContext } from "@/context/TodoContext";
+import { toast } from "react-toastify";
 
 export const useDeleteTodo = () => {
   const { setTodos, setIsLoading, setError } = useTodoContext();
@@ -17,6 +18,7 @@ export const useDeleteTodo = () => {
         await apiDeleteTodo(id);
         // remove from context
         setTodos((prev) => prev.filter((t) => t._id !== id));
+        toast.success("the task deleted successfully");
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "Failed to delete todo");
       } finally {
@@ -33,6 +35,7 @@ export const useDeleteTodo = () => {
       await apiClearCompletedTodos();
       // drop all completed in context
       setTodos((prev) => prev.filter((t) => !t.status));
+      toast.success("You have deleted all completed tasks");
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : "Failed to clear completed todos",

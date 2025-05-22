@@ -15,6 +15,8 @@
   /* Backgrounds */
   --color-background-default: #ffffff; /* page & card bg */
   --color-background-subtle: #f5f5f5; /* hover/card alt bg */
+  --color-accent-bg: #faeaf4;
+  --color-accent-bg-light: #fff9fc;
 
   /* Borders & Focus */
   --color-border-default: #e5e7eb; /* formerly gray‑200 */

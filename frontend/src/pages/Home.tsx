@@ -50,43 +50,48 @@ const Home = () => {
   const { updateStatus, updateTitle } = useUpdateTodo();
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col rounded-lg bg-white shadow-lg">
-      <h1 className="text-text-primary mt-8 text-center text-2xl font-bold">
+    <div
+      className={cn(
+        "bg-background-default mx-3 flex w-full flex-col rounded-lg shadow-lg",
+        "md:mx-auto md:max-w-xl",
+      )}
+    >
+      <h1 className="text-text-primary mt-8 text-center text-xl font-bold md:text-3xl">
         Todo App
       </h1>
-
       {error && <ErrorMessage error={error} />}
       {isLoading && <Spinner />}
-
       {/* Add Form */}
-      <form onSubmit={handleAddTodo} className="px-4">
-        <div className="border-border-default border-b py-2">
+      <form onSubmit={handleAddTodo} className="px-8">
+        <div className="border-border-default border-b py-3">
           <div className="flex items-center gap-3">
             <Input
               ref={inputRef}
               name="text"
               type="text"
               placeholder="Create a new todo..."
-              className="border-none text-sm text-gray-600 shadow-none focus-visible:ring-0"
+              className="text-text-gray placeholder:text-text-muted border-none shadow-none focus-visible:ring-0"
             />
             <Button
               type="submit"
               size="sm"
-              className="h-8 w-8 rounded-full bg-purple-500 p-0 hover:bg-purple-600"
+              className="bg-accent hover:bg-accent/80 h-8 w-8 cursor-pointer rounded-full p-0"
             >
               <span className="sr-only">Add todo</span>
-              <Plus size={16} className="text-white" />
+              <Plus
+                // size={16}
+                className="text-text-inverted h-4 w-4 md:h-6 md:w-6"
+              />
             </Button>
           </div>
         </div>
       </form>
-
       {/* List */}
       <ul className="mt-6 flex-1 overflow-y-auto">
         {todos.map((todo) => (
           <li
             key={todo._id}
-            className="group border-border-default flex items-center gap-3 border-b p-4 py-3 transition-colors hover:bg-gray-50"
+            className="group border-border-default hover:bg-accent-bg flex items-center gap-3 border-b p-4 py-4 transition-colors"
           >
             {/* toggle */}
             <button
@@ -94,8 +99,8 @@ const Home = () => {
               className={cn(
                 "flex h-6 w-6 items-center justify-center rounded-full border-2 transition-colors",
                 todo.status
-                  ? "border-transparent bg-gradient-to-br from-purple-400 to-purple-600"
-                  : "border-gray-200 hover:border-purple-400",
+                  ? "from-accent/90 to-accent border-transparent bg-gradient-to-br"
+                  : "border-border-default group-hover:border-accent/90", // ← add this
               )}
             >
               {todo.status && <Check size={14} className="text-white" />}
@@ -117,14 +122,16 @@ const Home = () => {
                   }
                 }}
                 autoFocus
-                className="flex-grow border-none text-sm focus-visible:ring-0"
+                className="flex-grow border-none focus-visible:ring-0"
               />
             ) : (
               <span
                 onClick={() => updateStatus(todo._id, !todo.status)}
                 className={cn(
-                  "flex-grow cursor-pointer text-sm font-medium transition-colors",
-                  todo.status ? "text-gray-400 line-through" : "text-gray-700",
+                  "flex-grow cursor-pointer transition-colors",
+                  todo.status
+                    ? "text-text-muted line-through"
+                    : "text-text-gray",
                 )}
               >
                 {todo.text}
@@ -138,13 +145,13 @@ const Home = () => {
                   setEditingId(todo._id);
                   setEditText(todo.text);
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-text-muted hover:text-text-gray"
               >
                 <Pencil size={16} />
               </button>
               <button
                 onClick={() => deleteTodo(todo._id)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-text-muted hover:text-gray-600"
               >
                 <X size={18} />
               </button>
@@ -152,54 +159,59 @@ const Home = () => {
           </li>
         ))}
       </ul>
-
       {/* Footer */}
+      {/* Footer: desktop footer with filters hidden on mobile */}
       <div
         className={cn(
-          "border-border-default mt-auto flex flex-wrap items-center justify-between border-t p-4 text-xs",
+          "border-border-default mt-auto flex items-center justify-between border-t px-4 pt-4 pb-0 text-sm md:p-4",
           filter === "active"
-            ? "bg-purple-50 text-purple-600"
-            : "bg-white text-gray-500",
+            ? "bg-accent-bg-light text-text-primary"
+            : "text-text-gray bg-white",
         )}
       >
+        {/* items-left */}
         <span className="font-medium">
           {todos.filter((t) => !t.status).length} items left
         </span>
-        <div className="flex items-center gap-4 font-medium">
-          <button
-            onClick={() => handleFilter("all")}
-            className={cn(
-              "cursor-pointer hover:text-purple-800",
-              filter === "all" ? "text-purple-600" : "text-gray-500",
-            )}
-          >
-            All
-          </button>
-          <button
-            onClick={() => handleFilter("active")}
-            className={cn(
-              "cursor-pointer hover:text-purple-600",
-              filter === "active" ? "text-purple-600" : "text-gray-500",
-            )}
-          >
-            Active
-          </button>
-          <button
-            onClick={() => handleFilter("completed")}
-            className={cn(
-              "cursor-pointer hover:text-purple-600",
-              filter === "completed" ? "text-purple-600" : "text-gray-500",
-            )}
-          >
-            Completed
-          </button>
+
+        {/* filters: hidden on mobile, visible desktop */}
+        <div className="hidden items-center gap-4 font-medium sm:flex">
+          {(["all", "active", "completed"] as Filter[]).map((f) => (
+            <button
+              key={f}
+              onClick={() => handleFilter(f)}
+              className={cn(
+                "hover:text-text-primary cursor-pointer",
+                filter === f ? "text-text-primary" : "text-text-gray",
+              )}
+            >
+              {f.charAt(0).toUpperCase() + f.slice(1)}
+            </button>
+          ))}
         </div>
+
+        {/* clear button */}
         <button
           onClick={clearCompletedTodos}
-          className="cursor-pointer text-gray-500 hover:text-purple-600"
+          className="text-text-gray hover:text-text-primary cursor-pointer"
         >
           Clear Completed
         </button>
+      </div>
+      {/* Mobile-only filter bar under the footer */}
+      <div className="mb-3 flex items-center justify-center gap-4 p-3 text-sm sm:hidden">
+        {(["all", "active", "completed"] as Filter[]).map((f) => (
+          <button
+            key={f}
+            onClick={() => handleFilter(f)}
+            className={cn(
+              "hover:text-text-primary cursor-pointer",
+              filter === f ? "text-text-primary" : "text-text-gray",
+            )}
+          >
+            {f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
       </div>
     </div>
   );

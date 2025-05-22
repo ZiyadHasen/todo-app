@@ -36,7 +36,7 @@ export const useCreateTodo = () => {
         await createTodo({ text, status });
         const updatedTodos = await fetchTodos();
         setTodos(updatedTodos);
-        toast.success("Todo created");
+        toast.success("Todo created successfully! 🎉");
       } catch (err) {
         const msg =
           err instanceof Error ? err.message : "Failed to create todo";
