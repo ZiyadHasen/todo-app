@@ -1,7 +1,7 @@
 import DashboardImage from "@/assets/Image/dashboardcover.png";
 import logo from "@/assets/Image/logo-2.svg";
 import userIcon from "@/assets/Image/user.svg";
-import { ModeToggle } from "@/components/custom/modeToggle";
+import ThemeModeToggle from "@/components/custom/modeToggle";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -49,21 +49,21 @@ export function RootLayout() {
 
   return (
     <>
-      <nav className="bg-background-default font-josefin sticky top-0 z-50 w-full">
-        <div className="relative flex h-[62px] items-center justify-between px-4 lg:px-12">
+      <nav className="bg-bg-default font-josefin sticky top-0 z-50 w-full">
+        <div className="bg-bg-default relative flex h-[62px] items-center justify-between px-4 lg:px-12">
           <Link
             to="/app"
-            className="text-text-primary flex items-center space-x-2"
+            className="text-text-accent flex items-center space-x-2"
           >
             <img src={logo} alt="Logo" />
-            <span className="text-text-primary text-2xl lg:text-3xl">
+            <span className="text-text-accent text-2xl lg:text-3xl">
               Your Notes
             </span>
           </Link>
 
           {/* make this  so dropdown anchors here */}
           <div className="relative flex items-center space-x-5 lg:space-x-10">
-            <ModeToggle />
+            <ThemeModeToggle />
 
             {/* isolate button+dropdown in its own relative box */}
             <div className="relative">
@@ -80,7 +80,7 @@ export function RootLayout() {
               {isOpen && !isMobile && (
                 <div
                   ref={dropdownRef}
-                  className="bg-background-default absolute top-16 right-0 z-50 mt-2 w-64 overflow-hidden rounded-lg shadow-lg"
+                  className="bg-bg-default absolute top-16 right-0 z-50 mt-2 w-64 overflow-hidden rounded-lg shadow-lg"
                 >
                   <h3 className="text-text-primary px-4 pt-4 pb-2 text-center text-2xl font-medium">
                     Hello {name}
@@ -107,7 +107,7 @@ export function RootLayout() {
         </div>
       </nav>
 
-      <main className="relative min-h-screen">
+      <main className="bg-bg-default relative min-h-screen">
         {/* full‑width + natural height */}
         <img src={DashboardImage} alt="bg image" className="h-48 w-full" />
 

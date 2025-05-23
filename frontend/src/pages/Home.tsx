@@ -56,7 +56,7 @@ const Home = () => {
         "md:mx-auto md:max-w-xl",
       )}
     >
-      <h1 className="text-text-primary mt-8 text-center text-xl font-bold md:text-3xl">
+      <h1 className="text-text-gray mt-8 text-center text-xl font-bold md:text-3xl">
         Todo App
       </h1>
       {error && <ErrorMessage error={error} />}
@@ -75,7 +75,7 @@ const Home = () => {
             <Button
               type="submit"
               size="sm"
-              className="bg-accent hover:bg-accent/80 h-8 w-8 cursor-pointer rounded-full p-0"
+              className="bg-primary h-8 w-8 cursor-pointer rounded-full p-0"
             >
               <span className="sr-only">Add todo</span>
               <Plus
@@ -166,7 +166,7 @@ const Home = () => {
           "border-border-default mt-auto flex items-center justify-between border-t px-4 pt-4 pb-0 text-sm md:p-4",
           filter === "active"
             ? "bg-accent-bg-light text-text-primary"
-            : "text-text-gray bg-white",
+            : "text-text-gray bg-background",
         )}
       >
         {/* items-left */}

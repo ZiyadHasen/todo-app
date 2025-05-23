@@ -1,63 +1,87 @@
 "use client";
 
-type Theme = "light" | "dark" | "system";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 import { useTheme } from "@/theme/ThemeProvider";
-import { Check, Moon, Sun } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Moon, Sun } from "lucide-react";
 
-export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
-  const resolvedTheme =
-    theme === "system"
-      ? matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
-      : theme;
+type ThemeColors =
+  | "zinc"
+  | "rose"
+  | "blue"
+  | "green"
+  | "orange"
+  | "red"
+  | "yellow"
+  | "violet";
 
-  const themes: { value: Theme; label: string }[] = [
-    { value: "light", label: "Light" },
-    { value: "dark", label: "Dark" },
-    { value: "system", label: "System" },
+export default function ModeToggle() {
+  const { setTheme, theme } = useTheme();
+
+  const colors: ThemeColors[] = [
+    "zinc",
+    "rose",
+    "blue",
+    "green",
+    "orange",
+    "red",
+    "yellow",
+    "violet",
   ];
 
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="cursor-pointer">
-          {resolvedTheme === "dark" ? (
-            <Moon size={24} color="#D375B9" />
-          ) : (
-            <Sun size={24} color="#D375B9" />
-          )}
+  const toggleMode = () => {
+    // Toggle between light and dark mode
+    const newMode = theme.mode === "light" ? "dark" : "light";
+    setTheme({ ...theme, mode: newMode });
+  };
 
-          <span className="sr-only">Toggle theme</span>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="bg-background-default text-text-black"
-      >
-        {themes.map((t) => (
-          <DropdownMenuItem
-            key={t.value}
-            onClick={() => setTheme(t.value)}
-            className={cn(
-              "flex cursor-pointer items-center justify-between gap-2 px-2 py-1",
-              theme === t.value && "font-semibold",
-              "hover:bg-background-subtle",
-            )}
-          >
-            <span>{t.label}</span>
-            {theme === t.value && <Check className="h-4 w-4" />}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+  const handleColorChange = (color: ThemeColors) => {
+    setTheme({ ...theme, color });
+  };
+
+  return (
+    <div className="flex gap-4 p-4">
+      {/* Mode Toggle Button */}
+      <div className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={toggleMode}
+          id="mode-toggle"
+          aria-label={`Switch to ${theme.mode === "light" ? "dark" : "light"} mode`}
+          // className="bg-bg-accent"
+        >
+          {theme.mode === "light" ? (
+            <Sun className="text-text-accent h-[1.2rem] w-[1.2rem]" />
+          ) : (
+            <Moon className="h-[1.2rem] w-[1.2rem]" />
+          )}
+        </Button>
+      </div>
+
+      {/* Color Dropdown */}
+      <div className="flex items-center gap-2">
+        <Label htmlFor="color-select">Color</Label>
+        <Select value={theme.color} onValueChange={handleColorChange}>
+          <SelectTrigger id="color-select" className="w-[180px]">
+            <SelectValue placeholder="Select color" />
+          </SelectTrigger>
+          <SelectContent>
+            {colors.map((color) => (
+              <SelectItem key={color} value={color}>
+                {color.charAt(0).toUpperCase() + color.slice(1)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
   );
 }

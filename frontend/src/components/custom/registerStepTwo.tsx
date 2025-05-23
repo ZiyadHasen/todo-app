@@ -93,22 +93,22 @@ export default function SignupFormTwo({
         </div>
 
         {/* Submit Button */}
-        <Button
+        <button
           type="submit"
           className="bg-accent text-text-inverted hover:bg-accent/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
           Complete signup{" "}
           <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
-        </Button>
+        </button>
 
         {/* Back Button */}
-        <Button
+        <button
           type="button"
           onClick={onBack}
           className="bg-btn-secondary text-text-inverted hover:bg-btn-secondary/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
           <ArrowLeft size={16} className="sm:h-[18px] sm:w-[18px]" /> Back
-        </Button>
+        </button>
       </form>
 
       <div className="mt-3 text-center">
