@@ -1,13 +1,10 @@
 import {
   CreateTodoResponse,
-  TodoResponse,
-  TodoSingleResponse,
-  UpdateTodoResponse,
   DeleteTodoResponse,
   Todo,
+  UpdateTodoResponse,
 } from "@/types/types";
-
-const API_URL = "http://localhost:5000/api/v1/todos";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/v1/todos`;
 
 //! This is your raw API call. it is nice to have all tasks to be handled separately
 

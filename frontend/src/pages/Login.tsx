@@ -37,7 +37,9 @@ export default function LoginForm() {
       // so the token cookie was never sent to the backend on
       // subsequent requests. Postman worked because it always sends cookies once they're set.
       // Your frontend didn’t.
-      const response = await fetch("http://localhost:5000/api/v1/auth/login", {
+      const API_URL = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API_URL}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

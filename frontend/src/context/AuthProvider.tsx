@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   const fetchedOnce = useRef(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   /**
    * Fetches the current user once on mount (or until you reset fetchedOnce.current).
@@ -18,9 +19,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/v1/users/get-user", {
+      const res = await fetch(`${API_URL}/api/v1/users/get-user`, {
         credentials: "include",
       });
+
       if (!res.ok) throw new Error("Failed to fetch user");
       const { user: fetched } = await res.json();
       setUser(fetched);
@@ -37,7 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
    */
   const logout = async () => {
     try {
-      await fetch("http://localhost:5000/api/v1/auth/logout", {
+      await fetch(`${API_URL}/api/v1/auth/logout`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

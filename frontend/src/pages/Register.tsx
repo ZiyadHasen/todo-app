@@ -18,6 +18,8 @@ type FormData = {
 
 export default function Register() {
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const {
@@ -31,19 +33,19 @@ export default function Register() {
 
   // Handle form submission
   const onFormSubmit = async (data: FormData) => {
+    setLoading(true);
     try {
       const { confirmPassword, ...apiData } = data;
-      const response = await fetch(
-        "http://localhost:5000/api/v1/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...apiData,
-            birthYear: Number(data.birthYear),
-          }),
-        },
-      );
+
+      const API_URL = import.meta.env.VITE_API_URL;
+      const response = await fetch(`${API_URL}/api/v1/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...apiData,
+          birthYear: Number(data.birthYear),
+        }),
+      });
 
       const result = await response.json();
       console.log("Registration successful:", result);
@@ -56,11 +58,15 @@ export default function Register() {
             : result.error || "Registration failed.",
         );
       }
-      navigate("/"); // Redirect to home
+      toast.success("Signup successful. Please log in.");
+      navigate("/");
+
       return result;
     } catch (error) {
       console.error("Registration failed:", error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,6 +104,7 @@ export default function Register() {
           errors={errors}
           onBack={() => setStep(1)}
           onSubmit={handleFormSubmit}
+          loading={loading}
         />
       )}
     </div>

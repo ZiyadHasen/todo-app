@@ -24,21 +24,21 @@ export type User = {
   updatedAt?: string;
 };
 
-export type TodoResponse = {
-  msg: string;
-  todos: Todo[];
-  _id: string;
-};
+// export type TodoResponse = {
+//   msg: string;
+//   todos: Todo[];
+//   _id: string;
+// };
 
 export type CreateTodoResponse = {
   todo: Todo; // wrap created todo as an object
   message?: string;
 };
 
-export type TodoSingleResponse = {
-  msg: string;
-  todo: Todo;
-};
+// export type TodoSingleResponse = {
+//   msg: string;
+//   todo: Todo;
+// };
 
 export type UpdateTodoResponse = {
   msg: string;

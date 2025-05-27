@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -19,6 +18,7 @@ interface SignupFormTwoProps {
   errors: FieldErrors<FormData>;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onBack: () => void;
+  loading: boolean;
 }
 
 export default function SignupFormTwo({
@@ -26,6 +26,7 @@ export default function SignupFormTwo({
   errors,
   onSubmit,
   onBack,
+  loading,
 }: SignupFormTwoProps) {
   return (
     <div className="bg-background-default flex flex-col justify-center rounded-b-md p-4 sm:h-[580px] sm:w-[400px] sm:rounded-md sm:p-6 lg:h-[600px] lg:w-[490px]">
@@ -98,11 +99,19 @@ export default function SignupFormTwo({
 
         <Button
           type="submit"
+          disabled={loading}
           className="bg-bg-accent hover:bg-accent/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm text-white sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
-          Complete signup{" "}
-          <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
+          {loading ? (
+            "Signing up..."
+          ) : (
+            <>
+              Complete Signup{" "}
+              <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
+            </>
+          )}
         </Button>
+
         <Button
           type="button"
           onClick={onBack}

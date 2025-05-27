@@ -49,15 +49,15 @@ const EditProfileForm = () => {
       };
       if (data.password) payload.password = data.password;
 
-      const res = await fetch(
-        "http://localhost:5000/api/v1/users/update-user",
-        {
-          method: "PATCH",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
+      const API_URL = import.meta.env.VITE_API_URL;
+
+      const res = await fetch(`${API_URL}/api/v1/users/update-user`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
       if (!res.ok) throw new Error(`Update failed: ${res.status}`);
       const { user: updated } = await res.json(); // assume API returns { user: {…} }
 
