@@ -34,18 +34,15 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.static(path.resolve(__dirname, "./public")));
 app.use(cookieParser());
 
-// app.use(
-//   cors({
-//     origin: "http://localhost:5500",
-//   })
-// );
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://todo-app-nine-xi-11.vercel.app",
+];
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true, // allows the browser to send cookies
-    // if you specify methods, include GET:
-    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    origin: allowedOrigins,
+    credentials: true,
   })
 );
 
