@@ -115,7 +115,7 @@ export const validateUpdateUserInput = withValidationErrors([
   // allow password to be undefined, null, OR empty string without validating length
   body("password")
     .optional({ nullable: true, checkFalsy: true })
-    .isLength({ min: 8 })
+    .isLength({ min: 6 })
     .withMessage("Password must be at least 8 characters"),
 ]);
 

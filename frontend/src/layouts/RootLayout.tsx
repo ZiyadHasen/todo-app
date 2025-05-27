@@ -80,21 +80,21 @@ export function RootLayout() {
               {isOpen && !isMobile && (
                 <div
                   ref={dropdownRef}
-                  className="bg-bg-default absolute top-16 right-0 z-50 mt-2 w-64 overflow-hidden rounded-lg shadow-lg"
+                  className="bg-bg-card absolute top-16 right-0 z-50 mt-2 w-72 overflow-hidden rounded-lg shadow-lg"
                 >
-                  <h3 className="text-text-primary px-4 pt-4 pb-2 text-center text-2xl font-medium">
+                  <h3 className="text-text-main px-4 pt-4 pb-2 text-center text-2xl font-medium">
                     Hello {name}
                   </h3>
-                  <div className="space-y-2 p-3 text-xl">
+                  <div className="space-y-4 p-3 text-xl">
                     <Button
                       asChild
                       variant="outline"
-                      className="text-text-inverted bg-btn-secondary w-full border-0 text-[15px] hover:bg-gray-500"
+                      className="text-text-white bg-bg-secondary w-full cursor-pointer border-0 text-[15px] hover:bg-gray-500"
                     >
                       <Link to="/app/edit-profile">Modify User Info</Link>
                     </Button>
                     <Button
-                      className="text-text-inverted bg-accent w-full border-0 text-[15px] hover:bg-[#AD5B95]"
+                      className="text-text-white bg-bg-accent w-full cursor-pointer border-0 text-[15px] hover:bg-[#AD5B95]"
                       onClick={handleLogout}
                     >
                       Logout
@@ -115,7 +115,7 @@ export function RootLayout() {
         <Dialog open={isMobile && isOpen} onOpenChange={setIsOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle className="text-text-primary text-center text-2xl font-medium">
+              <DialogTitle className="text-text-accent text-center text-2xl font-medium">
                 Hello {name}
               </DialogTitle>
             </DialogHeader>
@@ -127,14 +127,14 @@ export function RootLayout() {
               >
                 <Button
                   variant="outline"
-                  className="text-text-inverted bg-btn-secondary w-full hover:bg-gray-500"
+                  className="bg-btn-secondary w-full text-white hover:bg-gray-500"
                 >
                   Modify User Info
                 </Button>
               </Link>
 
               <Button
-                className="text-text-inverted bg-accent w-full hover:bg-[#AD5B95]"
+                className="bg-accent w-full text-white hover:bg-[#AD5B95]"
                 onClick={handleLogout}
               >
                 Logout

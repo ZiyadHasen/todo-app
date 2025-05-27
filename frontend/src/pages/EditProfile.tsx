@@ -73,12 +73,12 @@ const EditProfileForm = () => {
   };
 
   return (
-    <div className="font-josefin bg-background-default mx-3 flex w-full max-w-sm flex-col self-start rounded-lg px-4 py-6 shadow-2xl lg:mx-auto lg:max-w-lg lg:px-6 lg:py-8">
-      <h1 className="text-text-primary mb-6 text-center text-xl font-semibold lg:text-2xl">
+    <div className="font-josefin bg-bg-card mx-3 flex w-full max-w-sm flex-col self-start rounded-lg px-4 py-6 shadow-2xl lg:mx-auto lg:max-w-lg lg:px-6 lg:py-8">
+      <h1 className="text-text-accent mb-6 text-center text-xl font-semibold lg:text-2xl">
         Modify User Information
       </h1>
       <form
-        className="space-y-1.5 lg:space-y-3"
+        className="space-y-1.5 lg:space-y-4"
         onSubmit={handleSubmit(onSubmit)}
       >
         <CustomInputField
@@ -88,7 +88,7 @@ const EditProfileForm = () => {
           {...register("email")}
         />
         {errors.email && (
-          <p className="text-error text-sm">{errors.email.message}</p>
+          <p className="text-sm text-red-500">{errors.email.message}</p>
         )}
 
         <CustomInputField
@@ -98,12 +98,12 @@ const EditProfileForm = () => {
           {...register("password")}
         />
         {errors.password && (
-          <p className="text-error text-sm">{errors.password.message}</p>
+          <p className="text-sm text-red-500">{errors.password.message}</p>
         )}
 
         <CustomInputField id="name" label="Name" {...register("name")} />
         {errors.name && (
-          <p className="text-error text-sm">{errors.name.message}</p>
+          <p className="text-sm text-red-500">{errors.name.message}</p>
         )}
 
         <CustomInputField
@@ -113,7 +113,7 @@ const EditProfileForm = () => {
           {...register("phone")}
         />
         {errors.phone && (
-          <p className="text-error text-sm">{errors.phone.message}</p>
+          <p className="text-sm text-red-500">{errors.phone.message}</p>
         )}
 
         <CustomInputField
@@ -123,12 +123,12 @@ const EditProfileForm = () => {
           {...register("birthYear", { valueAsNumber: true })}
         />
         {errors.birthYear && (
-          <p className="text-error text-sm">{errors.birthYear.message}</p>
+          <p className="text-sm text-red-500">{errors.birthYear.message}</p>
         )}
 
         <Button
           type="submit"
-          className="bg-accent hover:bg-accent/90 text-text-inverted mt-4 h-12 w-full cursor-pointer rounded-lg text-lg font-medium"
+          className="bg-bg-accent hover:bg-accent/90 text-text-white mt-4 h-12 w-full cursor-pointer rounded-lg text-lg font-medium"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Saving..." : "Save Changes"}

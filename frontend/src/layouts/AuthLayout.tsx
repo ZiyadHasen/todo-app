@@ -18,12 +18,12 @@ export default function RootLayout() {
         >
           <div className="absolute inset-1/2 flex aspect-square h-[75%] w-[90%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-3 rounded-sm bg-white/20 backdrop-blur-md lg:w-[80%] lg:gap-6">
             <img src={logo} alt="Logo of the app" className="max-w-[60%]" />
-            <h1 className="text-text-inverted text-center text-3xl tracking-wide sm:text-4xl md:text-5xl">
+            <h1 className="text-center text-3xl tracking-wide text-white sm:text-4xl md:text-5xl">
               Your Notes
             </h1>
           </div>
         </div>
-        <div className="font-josefin">
+        <div className="font-josefin bg-white">
           <Outlet />
         </div>
       </div>

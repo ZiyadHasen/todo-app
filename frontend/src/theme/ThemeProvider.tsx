@@ -1,59 +1,59 @@
-import { createContext, useContext, useState } from "react";
+// ThemeProvider.tsx
+import { createContext, useContext, useState, useEffect } from "react";
+import { Theme, ThemeProviderProps, ThemeProviderState } from "./theme";
 
 const initialState: ThemeProviderState = {
-  theme: { mode: "system", color: "yellow" },
-  setTheme: () => null,
+  theme: { mode: "system" },
+  setTheme: () => {},
 };
 
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+const ThemeContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = { mode: "dark", color: "yellow" },
-  storageKey = "distort-ui-theme",
-  ...props
+  defaultTheme = { mode: "dark" },
+  storageKey = "app-theme",
 }: ThemeProviderProps) {
-  const [storedTheme, setStoredTheme] = useState<Theme>(defaultTheme);
+  const [theme, setTheme] = useState<Theme>(() => {
+    // try reading from localStorage
+    if (typeof window !== "undefined") {
+      const stored = window.localStorage.getItem(storageKey);
+      if (stored === "light" || stored === "dark" || stored === "system") {
+        return { mode: stored };
+      }
+    }
+    return defaultTheme;
+  });
 
-  const value = {
-    theme: storedTheme,
-    setTheme: (theme: Theme) => {
-      setStoredTheme(theme);
-    },
-  };
+  // persist changes
+  useEffect(() => {
+    if (theme.mode !== "system") {
+      window.localStorage.setItem(storageKey, theme.mode);
+    } else {
+      window.localStorage.removeItem(storageKey);
+    }
+  }, [theme.mode, storageKey]);
 
-  if (storedTheme.mode === "system") {
-    const systemMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-
-    return (
-      <ThemeProviderContext.Provider {...props} value={value}>
-        <div data-theme={`${storedTheme.color}-${systemMode}`}>{children}</div>
-      </ThemeProviderContext.Provider>
-    );
-  }
+  // determine actual applied mode
+  const appliedMode =
+    theme.mode === "system"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : theme.mode;
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
-      <div
-        className={`${storedTheme.mode}`}
-        data-theme={`${storedTheme.color}-${storedTheme.mode}`}
-      >
-        {children}
-      </div>
-    </ThemeProviderContext.Provider>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div data-theme={appliedMode}>{children}</div>
+    </ThemeContext.Provider>
   );
 }
 
 /**
- * Hook to get and set new theme throughout application
+ * Hook to read & change theme
  */
 export const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
-
-  if (context === undefined)
-    throw new Error("useTheme must be used within a ThemeProvider");
-
-  return context;
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useTheme must be inside ThemeProvider");
+  return ctx;
 };

@@ -52,35 +52,35 @@ const Home = () => {
   return (
     <div
       className={cn(
-        "bg-background-default mx-3 flex w-full flex-col rounded-lg shadow-lg",
+        "bg-bg-card font-josefin mx-3 flex w-full flex-col rounded-lg shadow-lg",
         "md:mx-auto md:max-w-xl",
       )}
     >
-      <h1 className="text-text-gray mt-8 text-center text-xl font-bold md:text-3xl">
+      <h1 className="text-text-accent font-josefin mt-8 text-center text-xl font-bold md:text-3xl">
         Todo App
       </h1>
       {error && <ErrorMessage error={error} />}
       {isLoading && <Spinner />}
       {/* Add Form */}
       <form onSubmit={handleAddTodo} className="px-8">
-        <div className="border-border-default border-b py-3">
+        <div className="border-border border-b py-3">
           <div className="flex items-center gap-3">
             <Input
               ref={inputRef}
               name="text"
               type="text"
               placeholder="Create a new todo..."
-              className="text-text-gray placeholder:text-text-muted border-none shadow-none focus-visible:ring-0"
+              className="text-text-main placeholder:text-text-subheading border-none shadow-none focus-visible:ring-0"
             />
             <Button
               type="submit"
               size="sm"
-              className="bg-primary h-8 w-8 cursor-pointer rounded-full p-0"
+              className="bg-bg-accent h-8 w-8 cursor-pointer rounded-full p-0"
             >
               <span className="sr-only">Add todo</span>
               <Plus
                 // size={16}
-                className="text-text-inverted h-4 w-4 md:h-6 md:w-6"
+                className="text-text-white h-4 w-4 md:h-6 md:w-6"
               />
             </Button>
           </div>
@@ -91,16 +91,16 @@ const Home = () => {
         {todos.map((todo) => (
           <li
             key={todo._id}
-            className="group border-border-default hover:bg-accent-bg flex items-center gap-3 border-b p-4 py-4 transition-colors"
+            className="group border-border hover:bg-bg-hover flex items-center gap-3 border-b p-4 py-4 transition-colors"
           >
             {/* toggle */}
             <button
               onClick={() => updateStatus(todo._id, !todo.status)}
               className={cn(
-                "flex h-6 w-6 items-center justify-center rounded-full border-2 transition-colors",
+                "border-border flex h-6 w-6 items-center justify-center rounded-full border-1",
                 todo.status
-                  ? "from-accent/90 to-accent border-transparent bg-gradient-to-br"
-                  : "border-border-default group-hover:border-accent/90", // ← add this
+                  ? "bg-bg-accent border-0"
+                  : "border-border bg-bg-card group-hover:border-accent/90", // ← add this
               )}
             >
               {todo.status && <Check size={14} className="text-white" />}
@@ -130,8 +130,8 @@ const Home = () => {
                 className={cn(
                   "flex-grow cursor-pointer transition-colors",
                   todo.status
-                    ? "text-text-muted line-through"
-                    : "text-text-gray",
+                    ? "text-text-caption line-through"
+                    : "text-text-main",
                 )}
               >
                 {todo.text}
@@ -145,13 +145,13 @@ const Home = () => {
                   setEditingId(todo._id);
                   setEditText(todo.text);
                 }}
-                className="text-text-muted hover:text-text-gray"
+                className="text-text-subheading hover:text-text-main"
               >
                 <Pencil size={16} />
               </button>
               <button
                 onClick={() => deleteTodo(todo._id)}
-                className="text-text-muted hover:text-gray-600"
+                className="text-text-subheading hover:text-text-main"
               >
                 <X size={18} />
               </button>
@@ -163,15 +163,15 @@ const Home = () => {
       {/* Footer: desktop footer with filters hidden on mobile */}
       <div
         className={cn(
-          "border-border-default mt-auto flex items-center justify-between border-t px-4 pt-4 pb-0 text-sm md:p-4",
+          "border-border font-josefin mt-auto flex items-center justify-between border-t px-4 pt-4 pb-0 text-sm md:p-4",
           filter === "active"
-            ? "bg-accent-bg-light text-text-primary"
-            : "text-text-gray bg-background",
+            ? "bg-accent-bg-light text-text-accent"
+            : "text-text-main bg-background",
         )}
       >
         {/* items-left */}
-        <span className="font-medium">
-          {todos.filter((t) => !t.status).length} items left
+        <span className="text-text-subheading font-medium">
+          {todos.length} Items left
         </span>
 
         {/* filters: hidden on mobile, visible desktop */}
@@ -181,8 +181,8 @@ const Home = () => {
               key={f}
               onClick={() => handleFilter(f)}
               className={cn(
-                "hover:text-text-primary cursor-pointer",
-                filter === f ? "text-text-primary" : "text-text-gray",
+                "hover:text-text-accent cursor-pointer",
+                filter === f ? "text-text-accent" : "text-text-subheading",
               )}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -193,7 +193,7 @@ const Home = () => {
         {/* clear button */}
         <button
           onClick={clearCompletedTodos}
-          className="text-text-gray hover:text-text-primary cursor-pointer"
+          className="text-text-subheading hover:text-text-accent cursor-pointer font-medium"
         >
           Clear Completed
         </button>
@@ -205,8 +205,10 @@ const Home = () => {
             key={f}
             onClick={() => handleFilter(f)}
             className={cn(
-              "hover:text-text-primary cursor-pointer",
-              filter === f ? "text-text-primary" : "text-text-gray",
+              "hover:text-text-accent cursor-pointer",
+              filter === f
+                ? "text-text-accent"
+                : "text-text-subheading font-medium",
             )}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}

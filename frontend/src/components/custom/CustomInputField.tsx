@@ -11,13 +11,13 @@ export const CustomInputField = forwardRef<
   CustomInputFieldProps
 >(({ id, label, className = "", ...props }, ref) => (
   <div className="space-y-2">
-    <Label htmlFor={id} className="text-text-gray font-medium">
+    <Label htmlFor={id} className="text-text-label font-medium">
       {label}
     </Label>
     <input
       id={id}
       ref={ref}
-      className={`border-border-default focus:border-focus-outline text-text-gray placeholder-text-muted w-full rounded-md border px-3 py-2 focus:border-2 focus:ring-2 focus:outline-none ${className}`}
+      className={`border-border text-text-main w-full rounded-md border px-3 py-2 focus:border-2 focus:border-[#d375b9] focus:ring-2 focus:ring-[#d375b9] focus:outline-none ${className}`}
       style={{ boxShadow: "none" }}
       {...props}
     />

@@ -70,8 +70,8 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="bg-background-default flex flex-col justify-center rounded-t-none rounded-b-md p-4 sm:h-[580px] sm:w-[400px] sm:rounded-md sm:p-6 lg:h-[600px] lg:w-[490px]">
-      <h1 className="text-text-primary mb-6 text-center text-3xl font-bold sm:mb-8 sm:text-4xl">
+    <div className="flex flex-col justify-center rounded-t-none rounded-b-md p-4 sm:h-[580px] sm:w-[400px] sm:rounded-md sm:p-6 md:rounded-md lg:h-[600px] lg:w-[490px]">
+      <h1 className="text-text-accent mb-6 text-center text-3xl font-bold sm:mb-8 sm:text-4xl">
         Login
       </h1>
 
@@ -82,7 +82,7 @@ export default function LoginForm() {
         <div className="space-y-1 sm:space-y-2">
           <label
             htmlFor="email"
-            className="text-text-gray block text-sm sm:text-base"
+            className="block text-sm text-[#494c6b] sm:text-base"
           >
             Email
           </label>
@@ -90,17 +90,18 @@ export default function LoginForm() {
             id="email"
             type="email"
             {...register("email")}
-            className="border-border-default focus:border-focus-outline h-10 w-full rounded-md border focus:border-2 focus:ring-0 focus:outline-none sm:h-12"
+            className="h-10 w-full rounded-md border border-[#e3e4f1] px-3 py-2 text-[#494c6b] focus:border-[#d375b9] focus:ring-1 focus:ring-[#d375b9] focus:outline-none sm:h-12"
           />
+
           {errors.email && (
-            <span className="text-error text-sm">{errors.email.message}</span>
+            <span className="text-sm text-red-500">{errors.email.message}</span>
           )}
         </div>
 
         <div className="space-y-1 sm:space-y-2">
           <label
             htmlFor="password"
-            className="text-text-gray block text-sm sm:text-base"
+            className="block text-sm text-[#494c6b] sm:text-base"
           >
             Password
           </label>
@@ -109,7 +110,7 @@ export default function LoginForm() {
               id="password"
               {...register("password")}
               type={showPassword ? "text" : "password"}
-              className="border-border-default focus:border-focus-outline h-10 w-full rounded-md border pr-10 focus:border-2 focus:ring-0 focus:outline-none sm:h-12"
+              className="h-10 w-full rounded-md border border-[#e3e4f1] px-3 py-2 text-[#494c6b] focus:border-[#d375b9] focus:ring-1 focus:ring-[#d375b9] focus:outline-none sm:h-12"
             />
             <button
               type="button"
@@ -128,7 +129,7 @@ export default function LoginForm() {
         <Button
           type="submit"
           disabled={loading}
-          className="bg-accent hover:bg-accent/90 text-text-inverted mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
+          className="bg-bg-accent hover:bg-accent/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm text-white sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
           {loading ? (
             "Logging in..."
@@ -141,9 +142,9 @@ export default function LoginForm() {
       </form>
 
       <div className="mt-4 text-center sm:mt-6">
-        <p className="font-josefin text-text-gray text-sm sm:text-base">
+        <p className="font-josefin text-sm text-[#494c6b] sm:text-base">
           Don’t have an account?{" "}
-          <Link to="/register" className="text-accent hover:underline">
+          <Link to="/register" className="text-text-accent hover:underline">
             Signup
           </Link>
         </p>

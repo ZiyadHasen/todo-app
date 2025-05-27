@@ -29,7 +29,7 @@ export default function SignupFormTwo({
 }: SignupFormTwoProps) {
   return (
     <div className="bg-background-default flex flex-col justify-center rounded-b-md p-4 sm:h-[580px] sm:w-[400px] sm:rounded-md sm:p-6 lg:h-[600px] lg:w-[490px]">
-      <h1 className="text-accent my-4 text-center text-2xl font-bold sm:mb-8 sm:text-4xl">
+      <h1 className="text-text-accent my-4 text-center text-2xl font-bold sm:mb-8 sm:text-4xl">
         Complete Signup
       </h1>
 
@@ -38,7 +38,7 @@ export default function SignupFormTwo({
         <div className="space-y-1">
           <label
             htmlFor="username"
-            className="text-text-gray block text-sm sm:text-base"
+            className="text-text-main block text-sm sm:text-base"
           >
             Username
           </label>
@@ -46,10 +46,10 @@ export default function SignupFormTwo({
             id="name"
             type="text"
             {...register("name")}
-            className="border-border-default focus:border-focus-outline h-10 w-full rounded-md border focus:border-2 focus:ring-0 focus:outline-none sm:h-12"
+            className="h-10 w-full rounded-md border border-[#e3e4f1] px-3 py-2 text-[#494c6b] focus:border-[#d375b9] focus:ring-1 focus:ring-[#d375b9] focus:outline-none sm:h-12"
           />
           {errors.name && (
-            <span className="text-error text-sm">{errors.name.message}</span>
+            <span className="text-sm text-red-500">{errors.name.message}</span>
           )}
         </div>
 
@@ -57,7 +57,7 @@ export default function SignupFormTwo({
         <div className="space-y-1">
           <label
             htmlFor="phone"
-            className="text-text-gray block text-sm sm:text-base"
+            className="text-text-main block text-sm sm:text-base"
           >
             Phone number
           </label>
@@ -65,10 +65,10 @@ export default function SignupFormTwo({
             id="phone"
             type="text"
             {...register("phone")}
-            className="border-border-default focus:border-focus-outline h-10 w-full rounded-md border focus:border-2 focus:ring-0 focus:outline-none sm:h-12"
+            className="h-10 w-full rounded-md border border-[#e3e4f1] px-3 py-2 text-[#494c6b] focus:border-[#d375b9] focus:ring-1 focus:ring-[#d375b9] focus:outline-none sm:h-12"
           />
           {errors.phone && (
-            <span className="text-error text-sm">{errors.phone.message}</span>
+            <span className="text-sm text-red-500">{errors.phone.message}</span>
           )}
         </div>
 
@@ -76,45 +76,46 @@ export default function SignupFormTwo({
         <div className="space-y-1">
           <label
             htmlFor="birthYear"
-            className="text-text-gray block text-sm sm:text-base"
+            className="text-text-main block text-sm sm:text-base"
           >
             Birth Year
           </label>
           <Input
             {...register("birthYear", { valueAsNumber: true })}
             type="number"
-            className="border-border-default focus:border-focus-outline h-10 w-full rounded-md border focus:border-2 focus:ring-0 focus:outline-none sm:h-12"
+            className="h-10 w-full rounded-md border border-[#e3e4f1] px-3 py-2 text-[#494c6b] focus:border-[#d375b9] focus:ring-1 focus:ring-[#d375b9] focus:outline-none sm:h-12"
           />
           {errors.birthYear && (
-            <span className="text-error text-sm">
+            <span className="text-sm text-red-500">
               {errors.birthYear.message}
             </span>
           )}
         </div>
 
         {/* Submit Button */}
-        <button
+
+        {/* Back Button */}
+
+        <Button
           type="submit"
-          className="bg-accent text-text-inverted hover:bg-accent/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
+          className="bg-bg-accent hover:bg-accent/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm text-white sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
           Complete signup{" "}
           <ArrowRight size={16} className="sm:h-[18px] sm:w-[18px]" />
-        </button>
-
-        {/* Back Button */}
-        <button
+        </Button>
+        <Button
           type="button"
           onClick={onBack}
-          className="bg-btn-secondary text-text-inverted hover:bg-btn-secondary/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
+          className="bg-bg-secondary hover:bg-btn-secondary/90 mt-2 flex h-10 w-full cursor-pointer items-center justify-center gap-1 rounded-md text-sm text-white sm:mt-4 sm:h-12 sm:gap-2 sm:text-xl"
         >
           <ArrowLeft size={16} className="sm:h-[18px] sm:w-[18px]" /> Back
-        </button>
+        </Button>
       </form>
 
       <div className="mt-3 text-center">
-        <p className="text-text-gray text-sm sm:text-base">
+        <p className="text-text-main text-sm sm:text-base">
           Already have an account!{" "}
-          <Link to="/" className="text-text-primary hover:underline">
+          <Link to="/" className="text-text-accent hover:underline">
             Login
           </Link>
         </p>

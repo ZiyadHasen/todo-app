@@ -57,7 +57,7 @@ export const getActiveTodos = async (req: Request, res: Response) => {
   try {
     const activeTodos = await Todo.find({
       user: req.user?.userId,
-      status: true,
+      status: false,
     });
     if (!activeTodos || activeTodos.length === 0) {
       res
@@ -70,22 +70,19 @@ export const getActiveTodos = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
 // !get all completed todos
 export const getCompletedTodos = async (req: Request, res: Response) => {
   try {
     const completedTodos = await Todo.find({
       user: req.user?.userId,
-      status: false,
+      status: true,
     });
-    if (!completedTodos || completedTodos.length === 0) {
-      res
-        .status(404)
-        .json({ msg: "There are no completed todos to show for the user" });
-      return;
-    }
-    res
-      .status(200)
-      .json({ msg: "all completedTodos returned", completedTodos });
+
+    res.status(200).json({
+      msg: "Completed todos fetched",
+      completedTodos, // may be []
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
@@ -96,7 +93,7 @@ export const deleteCompletedTodos = async (req: Request, res: Response) => {
   try {
     const result = await Todo.deleteMany({
       user: req.user?.userId,
-      status: false,
+      status: true,
     });
 
     if (result.deletedCount === 0) {
