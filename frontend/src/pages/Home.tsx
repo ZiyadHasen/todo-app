@@ -122,7 +122,7 @@ const Home = () => {
                   }
                 }}
                 autoFocus
-                className="flex-grow border-none focus-visible:ring-0"
+                className="text-text-main flex-grow border-none focus-visible:ring-0"
               />
             ) : (
               <span
