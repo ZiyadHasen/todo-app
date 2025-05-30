@@ -36,7 +36,8 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://todo-app-nine-xi-11.vercel.app",
+  "https://todo-app-v2-gray.vercel.app",
+  ,
 ];
 
 app.use(
