@@ -1,17 +1,20 @@
-import { StatusCodes } from "http-status-codes";
-import { Response, Request, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 
-const errorHandlerMiddleware = (
-  err: { statusCode: StatusCodes; message: string },
+interface AppError extends Error {
+  statusCode?: number;
+}
+
+export default function errorHandlerMiddleware(
+  err: AppError,
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  // console.log(err);
-  const statusCode = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
-  const msg = err.message || "something went wrong try again later";
+) {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Something went wrong";
 
-  res.status(statusCode).json({ msg });
-};
-
-export default errorHandlerMiddleware;
+  res.status(statusCode).json({
+    success: false,
+    message,
+  });
+}

@@ -1,23 +1,23 @@
-const express = require("express");
-const dotenv = require("dotenv");
+import express, { Request, Response, NextFunction } from "express";
+import dotenv from "dotenv";
 dotenv.config();
-const cors = require("cors");
-const morgan = require("morgan");
-const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
-const path = require("path");
+import cors from "cors";
+import morgan from "morgan";
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import path from "path";
 
 // DB connection
-const { connectDB } = require("./config/db");
+import { connectDB } from "./config/db";
 
 // Routers
-const authRouter = require("./routes/authRouter");
-const userRouter = require("./routes/userRouter");
-const todoRouter = require("./routes/todoRouter");
+import authRouter from "./routes/authRouter";
+import userRouter from "./routes/userRouter";
+import todoRouter from "./routes/todoRouter";
 
 // Middleware
-const { authenticateUser } = require("./middleware/authMiddleware");
-const errorHandlerMiddleware = require("./errors/errorHandlerMiddleware");
+import { authenticateUser } from "./middleware/authMiddleware";
+import errorHandlerMiddleware from "./errors/errorHandlerMiddleware";
 
 const app = express();
 
@@ -27,7 +27,9 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// Serve static (only if you have a bundled frontend in `public`)
 app.use(express.static(path.resolve(__dirname, "./public")));
+
 app.use(cookieParser());
 
 const allowedOrigins = [
@@ -42,15 +44,14 @@ app.use(
   })
 );
 
-// Routes
+// API Routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/todos", authenticateUser, todoRouter);
 
-// Error handler
+// Global error handler
 app.use(errorHandlerMiddleware);
 
-// Server
 const startServer = async () => {
   try {
     await connectDB();
@@ -58,8 +59,8 @@ const startServer = async () => {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`🔥 Server running on port ${PORT}`);
-      console.log(`⚡ Database: ${mongoose.connection.db?.databaseName}`);
-      console.log(`🌐 Environment: ${process.env.NODE_ENV}`);
+      console.log(`⚡ DB: ${mongoose.connection.db?.databaseName}`);
+      console.log(`🌐 ENV: ${process.env.NODE_ENV}`);
     });
   } catch (error) {
     console.error("❌ Failed to start server:", error);
