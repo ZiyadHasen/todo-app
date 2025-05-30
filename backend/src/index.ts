@@ -23,9 +23,7 @@ const app = express();
 
 app.use(express.json());
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
+app.use(morgan("dev"));
 
 // Serve static (only if you have a bundled frontend in `public`)
 app.use(express.static(path.resolve(__dirname, "./public")));
