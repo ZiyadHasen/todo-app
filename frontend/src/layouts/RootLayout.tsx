@@ -127,14 +127,14 @@ export function RootLayout() {
               >
                 <Button
                   variant="outline"
-                  className="bg-btn-secondary w-full text-white hover:bg-gray-500"
+                  className="bg-bg-secondary w-full text-white hover:bg-gray-500"
                 >
                   Modify User Info
                 </Button>
               </Link>
 
               <Button
-                className="bg-accent w-full text-white hover:bg-[#AD5B95]"
+                className="bg-bg-accent w-full text-white hover:bg-[#AD5B95]"
                 onClick={handleLogout}
               >
                 Logout

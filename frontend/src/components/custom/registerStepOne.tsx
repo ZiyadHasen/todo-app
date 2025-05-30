@@ -41,7 +41,7 @@ export default function SignupFormOne({
         <div className="space-y-1 sm:space-y-2">
           <label
             htmlFor="email"
-            className="text-text-main block text-sm sm:text-base"
+            className="block text-sm text-[#494c6b] sm:text-base"
           >
             Email
           </label>
@@ -60,7 +60,7 @@ export default function SignupFormOne({
         <div className="space-y-1 sm:space-y-2">
           <label
             htmlFor="password"
-            className="text-text-main block text-sm sm:text-base"
+            className="block text-sm text-[#494c6b] sm:text-base"
           >
             Password
           </label>
@@ -74,7 +74,7 @@ export default function SignupFormOne({
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="text-text-main absolute top-1/2 right-3 -translate-y-1/2"
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-[#494c6b]"
               aria-label="Toggle password visibility"
             >
               {showPassword ? (
@@ -95,7 +95,7 @@ export default function SignupFormOne({
         <div className="space-y-1 sm:space-y-2">
           <label
             htmlFor="confirmPassword"
-            className="text-text-main block text-sm sm:text-base"
+            className="block text-sm text-[#494c6b] sm:text-base"
           >
             Confirm Password
           </label>
@@ -109,7 +109,7 @@ export default function SignupFormOne({
             <button
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="text-text-main absolute top-1/2 right-3 -translate-y-1/2"
+              className="absolute top-1/2 right-3 -translate-y-1/2 text-[#494c6b]"
               aria-label="Toggle confirm password visibility"
             >
               {showConfirmPassword ? (
@@ -138,7 +138,7 @@ export default function SignupFormOne({
       </form>
 
       <div className="mt-4 text-center sm:mt-6">
-        <p className="text-text-main text-sm sm:text-base">
+        <p className="text-sm text-[#494c6b] sm:text-base">
           Already have an account!{" "}
           <Link to="/" className="text-text-accent hover:underline">
             Login

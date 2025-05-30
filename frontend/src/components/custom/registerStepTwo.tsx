@@ -39,7 +39,7 @@ export default function SignupFormTwo({
         <div className="space-y-1">
           <label
             htmlFor="username"
-            className="text-text-main block text-sm sm:text-base"
+            className="block text-sm text-[#494c6b] sm:text-base"
           >
             Username
           </label>
@@ -58,7 +58,7 @@ export default function SignupFormTwo({
         <div className="space-y-1">
           <label
             htmlFor="phone"
-            className="text-text-main block text-sm sm:text-base"
+            className="block text-sm text-[#494c6b] sm:text-base"
           >
             Phone number
           </label>
@@ -77,7 +77,7 @@ export default function SignupFormTwo({
         <div className="space-y-1">
           <label
             htmlFor="birthYear"
-            className="text-text-main block text-sm sm:text-base"
+            className="block text-sm text-[#494c6b] sm:text-base"
           >
             Birth Year
           </label>
@@ -122,7 +122,7 @@ export default function SignupFormTwo({
       </form>
 
       <div className="mt-3 text-center">
-        <p className="text-text-main text-sm sm:text-base">
+        <p className="text-sm text-[#494c6b] sm:text-base">
           Already have an account!{" "}
           <Link to="/" className="text-text-accent hover:underline">
             Login
