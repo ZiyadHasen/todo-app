@@ -63,7 +63,7 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log(`🔥 Server running on port ${PORT}`);
       console.log(`⚡ DB: ${mongoose.connection.db?.databaseName}`);
-      console.log(`🌐 ENV: ${process.env.NODE_ENV}`);
+      // console.log(`🌐 ENV: ${process.env.NODE_ENV}`);
     });
   } catch (error) {
     console.error("❌ Failed to start server:", error);
