@@ -1,4 +1,4 @@
-// src/contexts/AuthProvider.tsx
+
 import { useState, useEffect, useRef, useCallback, ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
 import { User } from "@/types/types";
