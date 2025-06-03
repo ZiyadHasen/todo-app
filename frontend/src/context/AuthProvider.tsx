@@ -34,9 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  /**
-   * Call on logout; clears server-side session and local state.
-   */
+
   const logout = async () => {
     try {
       await fetch(`${API_URL}/api/v1/auth/logout`, {
