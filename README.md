@@ -113,6 +113,8 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 For full API specs, see [docs/API.md](./docs/API.json).
 
+
+
 Sample endpoints:
 
 * `POST /api/v1/auth/register` — Register user
