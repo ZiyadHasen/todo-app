@@ -126,7 +126,12 @@ Sample endpoints:
 
 ## 🖼 Screenshots
 
-*(Add screenshots in `/screenshots` and reference here)*
+<img width="1920" height="888" alt="image" src="https://github.com/user-attachments/assets/fd2a94cd-ae0a-4861-b4f7-4b8f8913228f" />
+<img width="1913" height="891" alt="Pasted image" src="https://github.com/user-attachments/assets/6c84cdc7-eb68-4105-a019-9eed7b3cb2dd" />
+<img width="1913" height="891" alt="Pasted image (2)" src="https://github.com/user-attachments/assets/2a68ae41-a213-4e2f-a848-639c30d72707" />
+
+
+
 
 ---
 
