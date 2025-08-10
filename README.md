@@ -111,7 +111,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## 📚 API Documentation
 
-For full API specs, see [docs/API.md](./docs/API.md).
+For full API specs, see [docs/API.md](./docs/API.JSON).
 
 Sample endpoints:
 
