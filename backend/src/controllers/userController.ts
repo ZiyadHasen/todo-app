@@ -11,6 +11,9 @@ interface UserType {
   birthYear: number;
 }
 
+// Demo user email constant
+const DEMO_USER_EMAIL = "demo@todoapp.com";
+
 export const getUser = async (req: Request, res: Response) => {
   try {
     const user = await User.findById({ _id: req.user!.userId }).select(
@@ -29,6 +32,38 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   const { name, email, phone, birthYear, password } = req.body;
+  
+  // Check if this is a demo user
+  const currentUser = await User.findById(req.user!.userId);
+  if (!currentUser) {
+    res.status(404).json({ message: "User not found" });
+    return;
+  }
+
+  // Prevent demo users from changing sensitive account settings
+  if (currentUser.email === DEMO_USER_EMAIL) {
+    if (email && email !== DEMO_USER_EMAIL) {
+      res.status(403).json({ 
+        message: "Demo users cannot change their email address" 
+      });
+      return;
+    }
+    
+    if (password) {
+      res.status(403).json({ 
+        message: "Demo users cannot change their password" 
+      });
+      return;
+    }
+    
+    if (phone && phone !== currentUser.phone) {
+      res.status(403).json({ 
+        message: "Demo users cannot change their phone number" 
+      });
+      return;
+    }
+  }
+
   // console.log(
   //   `Received update data - Name: ${name}, Email: ${email}, Phone: ${phone}, Birth Year: ${birthYear}, Password: ${
   //     password ? "Provided" : "Not Provided"
@@ -56,6 +91,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
   if (!updatedUser) {
     res.status(404).json({ message: "User not found" });
+    return;
   }
 
   res.status(200).json({

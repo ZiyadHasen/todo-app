@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Play } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "@/validationSchema";
@@ -18,6 +18,7 @@ type FormData = {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [demoLoading, setDemoLoading] = useState(false);
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
 
@@ -36,7 +37,7 @@ export default function LoginForm() {
       // The issue was your login request used fetch without credentials: 'include',
       // so the token cookie was never sent to the backend on
       // subsequent requests. Postman worked because it always sends cookies once they're set.
-      // Your frontend didn’t.
+      // Your frontend didn't.
       const API_URL = import.meta.env.VITE_API_URL;
 
       const response = await fetch(`${API_URL}/api/v1/auth/login`, {
@@ -68,6 +69,40 @@ export default function LoginForm() {
       throw error;
     } finally {
       setLoading(false);
+    }
+  };
+
+  const onDemoLogin = async () => {
+    setDemoLoading(true);
+    try {
+      const API_URL = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API_URL}/api/v1/auth/demo`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      // Now that the cookie is set, refresh user in context
+      await refreshUser();
+
+      toast.success("Demo login successful! Welcome to the demo."); // Show success toast
+      navigate("/app"); // Redirect to app with user in context
+      return result;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(`Demo login failed: ${error.message}`);
+      } else {
+        toast.error("Demo login failed");
+      }
+      throw error;
+    } finally {
+      setDemoLoading(false);
     }
   };
 
@@ -143,9 +178,38 @@ export default function LoginForm() {
         </Button>
       </form>
 
+      {/* Demo Login Button */}
+      <div className="mt-4 sm:mt-6">
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-[#e3e4f1]" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-2 text-[#494c6b]">Or</span>
+          </div>
+        </div>
+        
+        <Button
+          type="button"
+          onClick={onDemoLogin}
+          disabled={demoLoading}
+          variant="outline"
+          className="mt-4 flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-md border-2 border-[#d375b9] bg-white text-[#d375b9] hover:bg-[#d375b9] hover:text-white sm:mt-6 sm:h-12 sm:gap-3 sm:text-lg"
+        >
+          {demoLoading ? (
+            "Loading demo..."
+          ) : (
+            <>
+              <Play size={16} className="sm:h-[18px] sm:w-[18px]" />
+              Continue as Demo
+            </>
+          )}
+        </Button>
+      </div>
+
       <div className="mt-4 text-center sm:mt-6">
         <p className="font-josefin text-sm text-[#494c6b] sm:text-base">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <Link to="/register" className="text-text-accent hover:underline">
             Signup
           </Link>
